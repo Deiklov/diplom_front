@@ -8,10 +8,15 @@ module.exports = (env, options) => {
     return {
         entry: path.join(__dirname, "src", "index.js"),
         output: {
-            path: path.resolve(__dirname, 'dist'),
+            path: path.join(__dirname, 'dist'),
             filename: 'bundle.js',
         },
-
+        resolve: {
+            extensions: [".js", ".jsx"],
+            alias: {
+                components: path.join(__dirname, "src", "components"),
+            },
+        },
         // devtool: 'cheap-eval-source-map',
 
         module: {
