@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, options) => {
     return {
@@ -17,17 +17,22 @@ module.exports = (env, options) => {
                 components: path.join(__dirname, "src", "components"),
             },
         },
-        // devtool: 'cheap-eval-source-map',
+        mode: 'development',
+        devServer: {
+            historyApiFallback: true,
+            contentBase: path.resolve(__dirname, './dist'),
+            open: true,
+            compress: true,
+            hot: true,
+            port: 3000,
+        },
 
         module: {
             rules: [
                 {
                     test: /\.jsx$|\.es6$|\.js$/,
                     use: {
-                        loader: 'babel-loader',
-                        options: {
-                            presets: ["@babel/preset-env", "@babel/preset-react"],
-                        }
+                        loader: 'babel-loader'
                     },
                     exclude: /(node_modules|bower_components)/
                 },
@@ -74,7 +79,9 @@ module.exports = (env, options) => {
             new HtmlWebpackPlugin({
                 template: path.join(__dirname, 'src', 'index.html'),
                 filename: 'index.html',
-            })
+            }),
+            new CleanWebpackPlugin(),
+            new webpack.HotModuleReplacementPlugin(),
         ],
 
     }

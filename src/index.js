@@ -1,11 +1,11 @@
 import React, {Fragment} from "react";
 import ReactDom from "react-dom";
-import {App} from 'components/App.jsx'
+import LoginForm from 'components/App.jsx'
 
 
 ReactDom.render(
     <>
-        <App/>
+        <LoginForm/>
     </>,
     document.getElementById("root")
 );
