@@ -35,7 +35,7 @@ jobs:
           password: ${{ secrets.BACK_PASSWORD }}
           script: |
             echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USER }} --password-stdin
-            cd front_diplom/
+            cd diplom_front/
             docker pull ${{ secrets.DOCKERHUB_REPO }}:latest
             export APICONTID=$(docker ps -q --filter "name=front_react")
             docker stop $APICONTID
