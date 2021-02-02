@@ -15,7 +15,7 @@ RUN npm run build
 # Production Build
 # ------------------------------------------------------
 FROM nginx:1.17.2-alpine
-COPY --from=builder /react-frontend/dist /var/www/html
+COPY --from=builder /react-frontend/build /var/www/html
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx/default.conf /etc/nginx/conf.d
 EXPOSE 80
