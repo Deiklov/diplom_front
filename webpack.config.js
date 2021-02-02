@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, options) => {
@@ -12,9 +12,11 @@ module.exports = (env, options) => {
             filename: 'bundle.js',
         },
         resolve: {
-            extensions: [".js", ".jsx"],
+            extensions: [".js", ".jsx", ".ts", ".tsx"],
             alias: {
                 components: path.join(__dirname, "src", "components"),
+                entity: path.join(__dirname, "src", "domain", "entity"),
+                repository: path.join(__dirname, "src", "domain", "repository"),
             },
         },
         mode: 'development',
@@ -35,6 +37,11 @@ module.exports = (env, options) => {
                         loader: 'babel-loader'
                     },
                     exclude: /(node_modules|bower_components)/
+                },
+                {
+                    test: /\.tsx?$/,
+                    use: 'ts-loader',
+                    exclude: '/node_modules/'
                 },
                 {
                     test: /\.css$/,
