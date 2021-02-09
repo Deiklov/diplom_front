@@ -1,62 +1,103 @@
 import React from 'react';
-import BaseView from '../BaseView';
+import {Form, Input, InputNumber, Button} from 'antd';
+import SignupViewModel from "../../view-model/auth/SignUpViewModel";
+import BaseView from "../BaseView";
 
-export default class SignupComponent extends React.Component {
-    public constructor(props: {}) {
+export interface SignupComponentProps {
+    signupViewModel: SignupViewModel;
+}
+
+// export interface SignupComponentState {
+//     ageQuery: string;
+//     authStatus: string;
+//     emailQuery: string;
+//     nameQuery: string;
+//     passwordQuery: string;
+// }
+
+export default class SignupComponent extends React.Component<SignupComponentProps, {}> implements BaseView {
+    private signupViewModel: SignupViewModel;
+
+    public constructor(props: SignupComponentProps) {
         super(props);
+        const {signupViewModel} = this.props;
+        this.signupViewModel = signupViewModel;
+
+        this.state = {
+            emailQuery: signupViewModel.emailQuery,
+            passwordQuery: signupViewModel.passwordQuery,
+            ageQuery: signupViewModel.ageQuery,
+            nameQuery: signupViewModel.nameQuery,
+            authStatus: signupViewModel.authStatus,
+
+        };
     }
+
+    private layout = {
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
+    };
+
+    private validateMessages = {
+        required: '${label} is required!',
+        types: {
+            email: '${label} is not a valid email!',
+            number: '${label} is not a valid number!',
+        },
+        number: {
+            range: '${label} must be between ${min} and ${max}',
+        },
+    };
+
+    onFinish = (values: any) => {
+        console.log('Success:', values);
+    };
+
+    public onViewModelChanged(): void {
+        this.setState({
+            emailQuery: this.signupViewModel.emailQuery,
+            passwordQuery: this.signupViewModel.passwordQuery,
+            nameQuery: this.signupViewModel.nameQuery,
+            ageQuery: this.signupViewModel.ageQuery,
+            authStatus: this.signupViewModel.authStatus,
+        });
+    }
+
 
     public render(): JSX.Element {
         return (
-            <div className="container my-2">
-                <form>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputEmail4">Email</label>
-                            <input type="email" className="form-control" id="inputEmail4" placeholder="Email"/>
-                        </div>
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputPassword4">Password</label>
-                            <input type="password" className="form-control" id="inputPassword4" placeholder="Password"/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputAddress">Address</label>
-                        <input type="text" className="form-control" id="inputAddress" placeholder="1234 Main St"/>
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="inputAddress2">Address 2</label>
-                        <input type="text" className="form-control" id="inputAddress2"
-                               placeholder="Apartment, studio, or floor"/>
-                    </div>
-                    <div className="form-row">
-                        <div className="form-group col-md-6">
-                            <label htmlFor="inputCity">City</label>
-                            <input type="text" className="form-control" id="inputCity"/>
-                        </div>
-                        <div className="form-group col-md-4">
-                            <label htmlFor="inputState">State</label>
-                            <select id="inputState" className="form-control">
-                                <option selected>Choose...</option>
-                                <option>...</option>
-                            </select>
-                        </div>
-                        <div className="form-group col-md-2">
-                            <label htmlFor="inputZip">Zip</label>
-                            <input type="text" className="form-control" id="inputZip"/>
-                        </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="form-check">
-                            <input className="form-check-input" type="checkbox" id="gridCheck"/>
-                            <label className="form-check-label" htmlFor="gridCheck">
-                                Check me out
-                            </label>
-                        </div>
-                    </div>
-                    <button type="submit" className="btn btn-primary">Sign in</button>
-                </form>
-            </div>
+            <Form {...this.layout} name="nest-messages" onFinish={this.onFinish}
+                  validateMessages={this.validateMessages}>
+                <Form.Item name={['user', 'name']} label="Name" rules={[{required: true}]}>
+                    <Input onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+                        this.signupViewModel.onNameQueryChanged(e.currentTarget.value);
+                    }}/>
+                </Form.Item>
+                <Form.Item name={['user', 'email']} label="Email" rules={[{type: 'email'}]}>
+                    <Input onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+                        this.signupViewModel.onEmailQueryChanged(e.currentTarget.value);
+                    }}/>
+                </Form.Item>
+                <Form.Item name={['user', 'age']} label="Age" rules={[{type: 'number', min: 0, max: 99}]}>
+                    <InputNumber onChange={(value: string | number | null | undefined): void => {
+                        this.signupViewModel.onAgeQueryChanged(String(value));
+                    }}/>
+                </Form.Item>
+                <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{required: true, message: 'Please input your password!'}]}
+                >
+                    <Input.Password onChange={(e: React.FormEvent<HTMLInputElement>): void => {
+                        this.signupViewModel.onPasswordQueryChanged(e.currentTarget.value);
+                    }}/>
+                </Form.Item>
+                <Form.Item wrapperCol={{...this.layout.wrapperCol, offset: 8}}>
+                    <Button type="primary" htmlType="submit" onClick={(): void => this.signupViewModel.onClickSubmit()}>
+                        Submit
+                    </Button>
+                </Form.Item>
+            </Form>
         )
     }
 }
