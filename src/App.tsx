@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import AuthComponent from './presentation/view/auth/AuthComponent';
 import AuthViewModelImpl from './presentation/view-model/auth/AuthViewModelImpl';
+import SignupViewModelImpl from "./presentation/view-model/auth/SignUpVMImpl";
 import AuthFakeApi from './data/auth/AuthFakeApi';
 import LoginUseCase from './domain/interactors/auth/LoginUseCase';
 import AuthHolder from './domain/entity/auth/models/AuthHolder';
@@ -17,6 +18,7 @@ function App(): JSX.Element {
     const loginUseCase = new LoginUseCase(authRepository, authHolder);
     // view layer
     const authViewModel = new AuthViewModelImpl(loginUseCase, authHolder);
+    const signUpViewModel = new SignupViewModelImpl(loginUseCase);
 
     return (
         <BrowserRouter>
@@ -32,7 +34,9 @@ function App(): JSX.Element {
                 <Route path="/stocks/:companyID" render={() => {
                     return <h1>Apple stocks</h1>
                 }}/>
-                <Route path="/signup" component={SignupComponent}/>
+                <Route path="/signup" render={() => {
+                    return <SignupComponent signupViewModel={signUpViewModel}/>
+                }}/>
                 <Route path="/profile" component={ProfileComponent}/>
             </Switch>
         </BrowserRouter>
