@@ -1,0 +1,66 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "someemail@mail.ru",
+      "age": 15,
+      "login": "deiklov",
+      "password": "167839",
+      "name": "perec"
+    },
+    {
+      "email": "someemail@mail.ru",
+      "age": 15,
+      "login": "dddeiklov",
+      "password": "167839",
+      "name": "perec2",
+      "id": 2
+    },
+    {
+      "email": "",
+      "password": "",
+      "name": "",
+      "age": 0,
+      "login": "",
+      "id": 3
+    },
+    {
+      "email": "",
+      "password": "",
+      "name": "",
+      "age": 0,
+      "login": "",
+      "id": 4
+    },
+    {
+      "email": "11",
+      "password": "1234567",
+      "name": "fdf",
+      "age": 0,
+      "login": "",
+      "id": 5
+    },
+    {
+      "email": "romanov408g@mail.ru",
+      "password": "1234567",
+      "name": "sfdsfd",
+      "age": 12,
+      "login": "",
+      "id": 6
+    }
+  ]
+}
