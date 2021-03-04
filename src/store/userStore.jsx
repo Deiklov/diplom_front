@@ -2,7 +2,7 @@ import {decorate, observable, action, computed, runInAction, extendObservable, m
 import {act} from "@testing-library/react";
 import agent from "../api/apiCalls";
 import commonStore from "./commonStore";
-
+//состояние юзера name avatar isAuthroized
 class UserStore {
     apiBase = 'http://localhost:8080/api/v1/';
     isAuthorized = false;
@@ -21,7 +21,7 @@ class UserStore {
             userData: observable,
             authorize: action,
             unAuthorize: action,
-            fetchLogin: action,
+            pullUser: action,
         })
     }
 

@@ -9,6 +9,7 @@ import SignUpContainer from "./pages/signupPage";
 import ProfilePage from "./pages/profilePage";
 import {Row, Col} from 'antd';
 import {inject, observer} from "mobx-react";
+import MainPage from "./pages/mainPage";
 
 const {Header, Content, Footer} = Layout;
 
@@ -34,32 +35,37 @@ class App extends Component {
                     <Header style={{position: "sticky", top: "0"}}>
                         <div className="logo"/>
                         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
-                            <Menu.Item key="1"><Link to="/login">login</Link></Menu.Item>
-                            <Menu.Item key="2"><Link to="/signup">signup</Link></Menu.Item>
-                            <Menu.Item key="3"><Link to="/profile">profile</Link></Menu.Item>
-                            
+                            {!this.props.userStore.isAuthorized &&
+                            <Menu.Item key="1"><Link to="/login">login</Link></Menu.Item>}
+                            {!this.props.userStore.isAuthorized &&
+                            <Menu.Item key="2"><Link to="/signup">signup</Link></Menu.Item>}
+                            {this.props.userStore.isAuthorized &&
+                            <Menu.Item key="3"><Link to="/profile">profile</Link></Menu.Item>}
+
                         </Menu>
                     </Header>
-                        <Switch>
-                            <Route path="/login" exact>
-                                <Row>
-                                    <Col span={8} offset={8}><LoginPage/></Col>
-                                </Row>
-                            </Route>
-                            <Route path="/" exact>
-                                <Redirect to="/profile"/>
-                            </Route>
-                            <Route path="/signup" exact>
-                                <Row>
-                                    <Col span={8} offset={8}><SignUpContainer/></Col>
-                                </Row>
-                            </Route>
-                            <Route path="/profile" exact>
-                                <Row>
-                                    <Col span={12} offset={0}><ProfilePage/></Col>
-                                </Row>
-                            </Route>
-                        </Switch>
+                    <Switch>
+                        <Route path="/login" exact>
+                            <Row>
+                                <Col span={8} offset={8}><LoginPage/></Col>
+                            </Row>
+                        </Route>
+                        <Route path="/" exact>
+                            <Row>
+                                <Col span={8} offset={8}><MainPage/></Col>
+                            </Row>
+                        </Route>
+                        <Route path="/signup" exact>
+                            <Row>
+                                <Col span={8} offset={8}><SignUpContainer/></Col>
+                            </Row>
+                        </Route>
+                        <Route path="/profile" exact>
+                            <Row>
+                                <Col span={12} offset={0}><ProfilePage/></Col>
+                            </Row>
+                        </Route>
+                    </Switch>
                     <h1>token :{this.props.commonStore.token}</h1>
                     <Footer style={{textAlign: "center"}}>Ant Design ©2018 Created by BMSTU</Footer>
                 </div>
@@ -79,4 +85,4 @@ class App extends Component {
 
 }
 
-export default inject("authStore", "commonStore")(withRouter(observer(App)));
+export default inject("authStore", "commonStore", "userStore")(withRouter(observer(App)));
