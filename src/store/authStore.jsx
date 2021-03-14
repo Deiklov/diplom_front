@@ -2,13 +2,12 @@ import {observable, action, makeObservable} from 'mobx';
 import agent from '../api/apiCalls';
 import userStore from './userStore';
 import commonStore from './commonStore';
-
+//для регистрации и авторизации для этого логин+пароль
 class AuthStore {
     inProgress = false;
     errors = undefined;
 
     values = {
-        username: '',
         email: '',
         password: '',
     };

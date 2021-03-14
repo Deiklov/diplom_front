@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import authStore from "./store/authStore";
 import commonStore from "./store/commonStore";
+import userStore from "./store/userStore";
 import promiseFinally from "promise.prototype.finally";
 import {BrowserRouter} from "react-router-dom";
 import {Provider} from "mobx-react";
@@ -12,6 +13,7 @@ import {Layout} from "antd";
 const stores = {
     authStore,
     commonStore,
+    userStore
 };
 
 promiseFinally.shim();
