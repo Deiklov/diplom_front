@@ -15,7 +15,6 @@ function MainPage() {
                 <p>{userStoreInstance.userData.avatarSrc}</p>
                 {!userStoreInstance.isAuthorized && <p>Dear guest please authorize in system</p>}
             </Card>
-            <p>Example charts</p>
             <ExampleCharts></ExampleCharts>
         </>
     );
