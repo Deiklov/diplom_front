@@ -1,4 +1,5 @@
 import {observable, action, reaction, makeObservable} from 'mobx';
+
 //общее состояние приложения типо appname token
 class CommonStore {
 

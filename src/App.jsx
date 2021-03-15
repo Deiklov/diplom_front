@@ -10,6 +10,7 @@ import ProfilePage from "./pages/profilePage";
 import {Row, Col} from 'antd';
 import {inject, observer} from "mobx-react";
 import MainPage from "./pages/mainPage";
+import userStore from "./store/userStore";
 
 const {Header, Content, Footer} = Layout;
 
@@ -17,15 +18,16 @@ class App extends Component {
     componentWillMount() {
         if (!this.props.commonStore.token) {
             this.props.commonStore.setAppLoaded();
+
         }
     }
 
     componentDidMount() {
-        // if (this.props.commonStore.token) {
-        //     this.props.userStore
-        //         .pullUser()
-        //         .finally(() => this.props.commonStore.setAppLoaded());
-        // }
+        if (this.props.commonStore.token) {
+            this.props.userStore.authorize();
+            this.props.userStore.pullUser();
+            this.props.commonStore.setAppLoaded();
+        }
     }
 
     render() {

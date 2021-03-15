@@ -3,6 +3,7 @@ import {Card} from 'antd';
 import {inject, observer} from "mobx-react";
 import userStoreInstance from "../store/userStore";
 import {withRouter} from "react-router";
+import ExampleCharts from "../components/charts";
 
 function MainPage() {
     return (
@@ -14,6 +15,8 @@ function MainPage() {
                 <p>{userStoreInstance.userData.avatarSrc}</p>
                 {!userStoreInstance.isAuthorized && <p>Dear guest please authorize in system</p>}
             </Card>
+            <p>Example charts</p>
+            <ExampleCharts></ExampleCharts>
         </>
     );
 }
