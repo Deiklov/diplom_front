@@ -3,22 +3,43 @@ import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
 import {Link} from "react-router-dom";
 import ListErrors from "../components/ListErrors";
+import {Form, Input, InputNumber, Button} from 'antd';
+
+const layout = {
+    labelCol: {
+        span: 8,
+    },
+    wrapperCol: {
+        span: 16,
+    },
+};
+const validateMessages = {
+    required: '${label} is required!',
+    types: {
+        email: '${label} is not a valid email!',
+    },
+
+};
 
 class SignUpContainer extends React.Component {
     componentWillUnmount() {
         this.props.authStore.reset();
     }
 
+    onFinish = (values) => {
+        console.log(values);
+        this.handleSubmitForm()
+    };
+
     handleUsernameChange = e => this.props.authStore.setUsername(e.target.value);
     handleEmailChange = e => this.props.authStore.setEmail(e.target.value);
     handlePasswordChange = e => this.props.authStore.setPassword(e.target.value);
-    handleSubmitForm = e => {
-        e.preventDefault();
+    handleSubmitForm = () => {
         this.props.authStore.register().then(() => this.props.history.replace("/"));
     };
 
     render() {
-        const { values, errors } = this.props.authStore;
+        const {values, errors} = this.props.authStore;
 
         return (
             <div className="auth-page">
@@ -30,48 +51,76 @@ class SignUpContainer extends React.Component {
                                 <Link to="login">Have an account?</Link>
                             </p>
 
-    
-                            <ListErrors errors={errors} />
-                            <form onSubmit={this.handleSubmitForm}>
-                                <fieldset>
-                                    <fieldset className="form-group">
-                                        <input
-                                            className="form-control form-control-lg"
-                                            type="text"
-                                            placeholder="Username"
-                                            value={values.name}
-                                            onChange={this.handleUsernameChange}
-                                        />
-                                    </fieldset>
 
-                                    <fieldset className="form-group">
-                                        <input
-                                            className="form-control form-control-lg"
-                                            type="email"
-                                            placeholder="Email"
-                                            value={values.email}
-                                            onChange={this.handleEmailChange}
-                                        />
-                                    </fieldset>
+                            <ListErrors errors={errors}/>
+                            <Form {...layout} name="nest-messages" onFinish={this.onFinish}
+                                  validateMessages={validateMessages}>
+                                <Form.Item
+                                    name={['user', 'name']}
+                                    label="Name"
+                                    rules={[
+                                        {
+                                            required: false,
+                                        },
+                                    ]}
+                                >
+                                    <Input onChange={this.handleUsernameChange}/>
+                                </Form.Item>
+                                <Form.Item
+                                    name={['user', 'email']}
+                                    label="Email"
+                                    rules={[
+                                        {
+                                            type: 'email',
+                                            required: true,
+                                        },
+                                    ]}
+                                >
+                                    <Input onChange={this.handleEmailChange}/>
+                                </Form.Item>
 
-                                    <fieldset className="form-group">
-                                        <input
-                                            className="form-control form-control-lg"
-                                            type="password"
-                                            placeholder="Password"
-                                            value={values.password}
-                                            onChange={this.handlePasswordChange}
-                                        />
-                                    </fieldset>
+                                <Form.Item
+                                    name="password"
+                                    label="Password"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please input your password!',
+                                        },
+                                    ]}
+                                    hasFeedback
+                                >
+                                    <Input.Password onChange={this.handlePasswordChange}/>
+                                </Form.Item>
+                                <Form.Item
+                                    name="confirm"
+                                    label="Confirm Password"
+                                    dependencies={['password']}
+                                    hasFeedback
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please confirm your password!',
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (!value || getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
 
-                                    <button
-                                        className="btn btn-lg btn-primary pull-xs-right"
-                                        type="submit"
-                                    >
-                                        Sign up
-                    </button>
-                                </fieldset>
-                            </form>
+                                                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                                            },
+                                        }),
+                                    ]}
+                                >
+                                    <Input.Password />
+                                </Form.Item>
+                                <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
+                                    <Button type="primary" htmlType="submit">
+                                        Submit
+                                    </Button>
+                                </Form.Item>
+                            </Form>
                         </div>
                     </div>
                 </div>
@@ -79,4 +128,5 @@ class SignUpContainer extends React.Component {
         );
     }
 }
+
 export default inject('authStore')(withRouter(observer(SignUpContainer)));

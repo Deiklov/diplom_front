@@ -6,6 +6,15 @@ import {inject, observer} from "mobx-react";
 import ListErrors from "../components/ListErrors";
 
 class LoginPage extends React.Component {
+    layout = {
+        labelCol: {span: 8},
+        wrapperCol: {span: 16},
+    };
+    tailLayout = {
+        wrapperCol: {offset: 8, span: 16},
+    };
+
+
     componentWillUnmount() {
         this.props.authStore.reset();
     }
@@ -18,11 +27,17 @@ class LoginPage extends React.Component {
         this.props.authStore.setPassword(e.target.value);
     };
 
-    handleSubmitForm = e => {
-        e.preventDefault();
+    handleSubmitForm = () => {
         console.log(this.props.authStore.values.email);
         console.log(this.props.authStore.values.password);
         this.props.authStore.login().then(() => this.props.history.replace("/"));
+    };
+    onFinish = (values) => {
+        this.handleSubmitForm()
+    };
+
+    onFinishFailed = (errorInfo) => {
+        console.log('Failed:', errorInfo);
     };
 
     render() {
@@ -35,42 +50,40 @@ class LoginPage extends React.Component {
                         <div className="col-md-6 offset-md-3 col-xs-12">
                             <h1 className="text-xs-center">Sign In</h1>
                             <p className="text-xs-center">
-                                <Link to="register">Need an account?</Link>
+                                <Link to="/signup">Need an account?</Link>
                             </p>
 
-                            <ListErrors errors={errors} />
+                            <ListErrors errors={errors}/>
+                            <Form
+                                {...this.layout}
+                                name="basic"
+                                initialValues={{remember: true}}
+                                onFinish={this.onFinish}
+                                onFinishFailed={this.onFinishFailed}
+                            >
+                                <Form.Item
+                                    label="Email"
+                                    name="email"
+                                    rules={[{required: true, message: 'Please input your email!'}]}
+                                >
+                                    <Input onChange={this.handleEmailChange}/>
+                                </Form.Item>
 
-                            <form onSubmit={this.handleSubmitForm}>
-                                <fieldset>
-                                    <fieldset className="form-group">
-                                        <input
-                                            className="form-control form-control-lg"
-                                            type="email"
-                                            placeholder="Email"
-                                            value={values.email}
-                                            onChange={this.handleEmailChange}
-                                        />
-                                    </fieldset>
+                                <Form.Item
+                                    label="Password"
+                                    name="password"
+                                    rules={[{required: true, message: 'Please input your password!'}]}
+                                >
+                                    <Input.Password onChange={this.handlePasswordChange}/>
+                                </Form.Item>
 
-                                    <fieldset className="form-group">
-                                        <input
-                                            className="form-control form-control-lg"
-                                            type="password"
-                                            placeholder="Password"
-                                            value={values.password}
-                                            onChange={this.handlePasswordChange}
-                                        />
-                                    </fieldset>
 
-                                    <button
-                                        className="btn btn-lg btn-primary pull-xs-right"
-                                        type="submit"
-                                        disabled={inProgress}
-                                    >
-                                        Sign in
-                                    </button>
-                                </fieldset>
-                            </form>
+                                <Form.Item {...this.tailLayout}>
+                                    <Button type="primary" htmlType="submit">
+                                        Submit
+                                    </Button>
+                                </Form.Item>
+                            </Form>
                         </div>
                     </div>
                 </div>

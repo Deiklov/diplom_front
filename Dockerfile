@@ -2,7 +2,7 @@ FROM node:15-alpine as builder
 
 # install and cache app dependencies
 COPY package.json package-lock.json ./
-RUN npm install && mkdir /react-frontend && mv ./node_modules ./react-frontend
+RUN npm install -g npm@7.6.3 && mkdir /react-frontend && mv ./node_modules ./react-frontend
 
 WORKDIR /react-frontend
 
