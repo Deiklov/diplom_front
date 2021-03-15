@@ -3,6 +3,7 @@ import {Form, Input, Button, Checkbox} from 'antd';
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
+import ListErrors from "../components/ListErrors";
 
 class LoginPage extends React.Component {
     componentWillUnmount() {
@@ -36,6 +37,8 @@ class LoginPage extends React.Component {
                             <p className="text-xs-center">
                                 <Link to="register">Need an account?</Link>
                             </p>
+
+                            <ListErrors errors={errors} />
 
                             <form onSubmit={this.handleSubmitForm}>
                                 <fieldset>

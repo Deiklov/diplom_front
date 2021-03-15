@@ -35,13 +35,13 @@ class App extends Component {
                     <Header style={{position: "sticky", top: "0"}}>
                         <div className="logo"/>
                         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                            <Menu.Item key="4"><Link to="/">Main page</Link></Menu.Item>
                             {!this.props.userStore.isAuthorized &&
                             <Menu.Item key="1"><Link to="/login">login</Link></Menu.Item>}
                             {!this.props.userStore.isAuthorized &&
                             <Menu.Item key="2"><Link to="/signup">signup</Link></Menu.Item>}
                             {this.props.userStore.isAuthorized &&
-                            <Menu.Item key="3"><Link to="/profile">profile</Link></Menu.Item>}
-
+                            <Menu.Item key="3"><Link to="/profile">Change profile</Link></Menu.Item>}
                         </Menu>
                     </Header>
                     <Switch>
@@ -66,7 +66,7 @@ class App extends Component {
                             </Row>
                         </Route>
                     </Switch>
-                    <h1>token :{this.props.commonStore.token}</h1>
+                    <h6>token : {this.props.commonStore.token}</h6>
                     <Footer style={{textAlign: "center"}}>Ant Design ©2018 Created by BMSTU</Footer>
                 </div>
             );

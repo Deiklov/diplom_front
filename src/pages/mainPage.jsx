@@ -1,21 +1,21 @@
 import React from 'react';
 import {Card} from 'antd';
-import {useObserver} from "mobx-react";
+import {inject, observer} from "mobx-react";
 import userStoreInstance from "../store/userStore";
+import {withRouter} from "react-router";
 
-export default function MainPage() {
+function MainPage() {
     return (
-        useObserver(() => (
-            <>
-                <Card title="Default page" style={{width: 300}}>
-                    <p>Hello</p>
-                    <p>{userStoreInstance.userData.name}</p>
-                    <p>{userStoreInstance.userData.login}</p>
-                    <p>{userStoreInstance.userData.email}</p>
-                    <p>{userStoreInstance.userData.avatarSrc}</p>
-                    <p>User is authorized {userStoreInstance.isAuthorized}</p>
-                </Card>
-            </>
-        ))
+        <>
+            <Card title="Default page" style={{width: 300}}>
+                <p>Hello </p>
+                <p>{userStoreInstance.userData.name}</p>
+                <p>{userStoreInstance.userData.email}</p>
+                <p>{userStoreInstance.userData.avatarSrc}</p>
+                {!userStoreInstance.isAuthorized && <p>Dear guest please authorize in system</p>}
+            </Card>
+        </>
     );
 }
+
+export default inject("userStore")(withRouter(observer(MainPage)));

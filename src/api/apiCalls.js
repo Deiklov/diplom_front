@@ -54,9 +54,9 @@ const Auth = {
     current: () =>
         requests.get('/user'),
     login: (email, password) =>
-        requests.post('/login',  {email, password}),
-    register: (username, email, password) =>
-        requests.post('/user', {user: {username, email, password}}),
+        requests.post('/login', {email, password}),
+    register: (name, email, password) =>
+        requests.post('/user', {name, email, password}),
 };
 
 
@@ -66,7 +66,9 @@ const Profile = {
     get: username =>
         requests.get(`/profiles/${username}`),
     unfollow: username =>
-        requests.del(`/profiles/${username}/follow`)
+        requests.del(`/profiles/${username}/follow`),
+    update: (name = undefined, email = undefined, avatarSrc = undefined) =>
+        requests.put(`/profiles/update`)
 };
 
 export default {

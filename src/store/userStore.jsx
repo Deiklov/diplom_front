@@ -2,26 +2,31 @@ import {decorate, observable, action, computed, runInAction, extendObservable, m
 import {act} from "@testing-library/react";
 import agent from "../api/apiCalls";
 import commonStore from "./commonStore";
+
 //состояние юзера name avatar isAuthroized
 class UserStore {
     apiBase = 'http://localhost:8080/api/v1/';
     isAuthorized = false;
-    jwtToken = "";
+    errors = undefined;
     userData = {
-        name: "",
-        login: "",
-        email: "",
-        avatarSrc: "",
+        name: undefined,
+        email: undefined,
+        avatarSrc: undefined,
+    };
+    userUpdData = {
+        name: undefined,
+        email: undefined,
+        avatarSrc: undefined,
     };
 
     constructor() {
         makeObservable(this, {
             isAuthorized: observable,
-            jwtToken: observable,
             userData: observable,
             authorize: action,
             unAuthorize: action,
             pullUser: action,
+            update: action,
         })
     }
 
@@ -37,7 +42,24 @@ class UserStore {
 
     async pullUser() {
         agent.Auth.current()
-            .then(({name}) => this.userData = name)
+            .then((data) => this.userData = data)
+            .catch(action((err) => {
+                this.errors = err.response && err.response.body && err.response.body.errors;
+                throw err;
+            }))
+            .finally(action(() => {
+                this.inProgress = false;
+            }));
+    }
+
+    async update() {
+        agent.Profile.update(this.userUpdData.name, this.userUpdData.email, this.userUpdData.avatarSrc)
+            //todo set full user data
+            .then(({name, login, email, avatarSrc}) => this.userData = {
+                name: name,
+                email: email,
+                avatarSrc: avatarSrc
+            })
             .catch(action((err) => {
                 this.errors = err.response && err.response.body && err.response.body.errors;
                 throw err;
@@ -46,10 +68,6 @@ class UserStore {
                 this.inProgress = false;
             }));
 
-        // runInAction(() => {
-        //     this.jwtToken = data.token;
-        //     this.isAuthorized = true;
-        // })
     }
 }
 

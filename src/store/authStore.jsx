@@ -10,6 +10,7 @@ class AuthStore {
     values = {
         email: '',
         password: '',
+        name:''
     };
 
     constructor() {
@@ -28,8 +29,8 @@ class AuthStore {
             })
     }
 
-    setUsername(username) {
-        this.values.username = username;
+    setUsername(name) {
+        this.values.name = name;
     }
 
     setEmail(email) {
@@ -41,7 +42,7 @@ class AuthStore {
     }
 
     reset() {
-        this.values.username = '';
+        this.values.name = '';
         this.values.email = '';
         this.values.password = '';
     }
@@ -51,6 +52,7 @@ class AuthStore {
         this.errors = undefined;
         return agent.Auth.login(this.values.email, this.values.password)
             .then(({token}) => commonStore.setToken(token))
+            .then(()=>userStore.authorize())
             .then(() => userStore.pullUser())
             .catch(action((err) => {
                 this.errors = err.response && err.response.body && err.response.body.errors;
@@ -64,8 +66,9 @@ class AuthStore {
     register() {
         this.inProgress = true;
         this.errors = undefined;
-        return agent.Auth.register(this.values.username, this.values.email, this.values.password)
-            .then(({user}) => commonStore.setToken(user.token))
+        return agent.Auth.register(this.values.name, this.values.email, this.values.password)
+            .then(({token}) => commonStore.setToken(token))
+            .then(()=>userStore.authorize())
             .then(() => userStore.pullUser())
             .catch(action((err) => {
                 this.errors = err.response && err.response.body && err.response.body.errors;

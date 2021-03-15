@@ -1,79 +1,82 @@
 import React from "react";
-import {Form, Input, InputNumber, Button} from 'antd';
+import {withRouter} from "react-router";
+import {inject, observer} from "mobx-react";
+import {Link} from "react-router-dom";
+import ListErrors from "../components/ListErrors";
 
-const layout = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 16,
-    },
-};
-const validateMessages = {
-    required: '${label} is required!',
-    types: {
-        email: '${label} is not a valid email!',
-        number: '${label} is not a valid number!',
-    },
-    number: {
-        range: '${label} must be between ${min} and ${max}',
-    },
-};
+class SignUpContainer extends React.Component {
+    componentWillUnmount() {
+        this.props.authStore.reset();
+    }
 
-const SignUpContainer = () => {
-    const onFinish = (values) => {
-        console.log(values);
+    handleUsernameChange = e => this.props.authStore.setUsername(e.target.value);
+    handleEmailChange = e => this.props.authStore.setEmail(e.target.value);
+    handlePasswordChange = e => this.props.authStore.setPassword(e.target.value);
+    handleSubmitForm = e => {
+        e.preventDefault();
+        this.props.authStore.register().then(() => this.props.history.replace("/"));
     };
 
-    return (
-        <Form {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-            <Form.Item
-                name={['user', 'name']}
-                label="Name"
-                rules={[
-                    {
-                        required: true,
-                    },
-                ]}
-            >
-                <Input/>
-            </Form.Item>
-            <Form.Item
-                name={['user', 'email']}
-                label="Email"
-                rules={[
-                    {
-                        type: 'email',
-                    },
-                ]}
-            >
-                <Input/>
-            </Form.Item>
-            <Form.Item
-                name={['user', 'age']}
-                label="Age"
-                rules={[
-                    {
-                        type: 'number',
-                        min: 0,
-                        max: 99,
-                    },
-                ]}
-            >
-                <InputNumber/>
-            </Form.Item>
-            <Form.Item name={['user', 'website']} label="Website">
-                <Input/>
-            </Form.Item>
-            <Form.Item name={['user', 'introduction']} label="Introduction">
-                <Input.TextArea/>
-            </Form.Item>
-            <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
-                <Button type="primary" htmlType="submit">
-                    Submit
-                </Button>
-            </Form.Item>
-        </Form>
-    );
-};
-export default SignUpContainer;
+    render() {
+        const { values, errors } = this.props.authStore;
+
+        return (
+            <div className="auth-page">
+                <div className="container page">
+                    <div className="row">
+                        <div className="col-md-6 offset-md-3 col-xs-12">
+                            <h1 className="text-xs-center">Sign Up</h1>
+                            <p className="text-xs-center">
+                                <Link to="login">Have an account?</Link>
+                            </p>
+
+    
+                            <ListErrors errors={errors} />
+                            <form onSubmit={this.handleSubmitForm}>
+                                <fieldset>
+                                    <fieldset className="form-group">
+                                        <input
+                                            className="form-control form-control-lg"
+                                            type="text"
+                                            placeholder="Username"
+                                            value={values.name}
+                                            onChange={this.handleUsernameChange}
+                                        />
+                                    </fieldset>
+
+                                    <fieldset className="form-group">
+                                        <input
+                                            className="form-control form-control-lg"
+                                            type="email"
+                                            placeholder="Email"
+                                            value={values.email}
+                                            onChange={this.handleEmailChange}
+                                        />
+                                    </fieldset>
+
+                                    <fieldset className="form-group">
+                                        <input
+                                            className="form-control form-control-lg"
+                                            type="password"
+                                            placeholder="Password"
+                                            value={values.password}
+                                            onChange={this.handlePasswordChange}
+                                        />
+                                    </fieldset>
+
+                                    <button
+                                        className="btn btn-lg btn-primary pull-xs-right"
+                                        type="submit"
+                                    >
+                                        Sign up
+                    </button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+}
+export default inject('authStore')(withRouter(observer(SignUpContainer)));
