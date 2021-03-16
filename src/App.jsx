@@ -6,6 +6,7 @@ import "antd/dist/antd.css";
 import {Layout, Menu, Breadcrumb} from 'antd';
 import LoginPage from "./pages/loginPage";
 import SignUpContainer from "./pages/signupPage";
+import CompaniesPage from "./pages/companiesPage"
 import ProfilePage from "./pages/profilePage";
 import {Row, Col} from 'antd';
 import {inject, observer} from "mobx-react";
@@ -39,11 +40,12 @@ class App extends Component {
                         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
                             <Menu.Item key="4"><Link to="/">Main page</Link></Menu.Item>
                             {!this.props.userStore.isAuthorized &&
-                            <Menu.Item key="1"><Link to="/login">login</Link></Menu.Item>}
+                            <Menu.Item key="1"><Link to="/login">Login</Link></Menu.Item>}
                             {!this.props.userStore.isAuthorized &&
-                            <Menu.Item key="2"><Link to="/signup">signup</Link></Menu.Item>}
+                            <Menu.Item key="2"><Link to="/signup">SignUp</Link></Menu.Item>}
                             {this.props.userStore.isAuthorized &&
                             <Menu.Item key="3"><Link to="/profile">Change profile</Link></Menu.Item>}
+                            <Menu.Item key="5"><Link to="/companies">Companies</Link></Menu.Item>
                         </Menu>
                     </Header>
                     <Switch>
@@ -65,6 +67,11 @@ class App extends Component {
                         <Route path="/profile" exact>
                             <Row>
                                 <Col span={12} offset={0}><ProfilePage/></Col>
+                            </Row>
+                        </Route>
+                        <Route path="/companies" exact>
+                            <Row>
+                                <Col span={12} offset={0}><CompaniesPage/></Col>
                             </Row>
                         </Route>
                     </Switch>
