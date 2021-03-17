@@ -27,6 +27,7 @@ class CommonStore {
 
     setToken(token) {
         this.token = token;
+        window.localStorage.setItem('jwt', token);
     }
 
     setAppLoaded() {
