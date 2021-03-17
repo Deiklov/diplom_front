@@ -5,7 +5,7 @@ import commonStore from "./commonStore";
 
 //состояние юзера name avatar isAuthroized
 class UserStore {
-    apiBase = 'http://localhost:8080/api/v1/';
+    apiBase = 'http://23.111.206.228:8080/api/v1';
     isAuthorized = false;
     errors = undefined;
     userData = {
