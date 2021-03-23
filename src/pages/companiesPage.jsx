@@ -17,10 +17,10 @@ const layout = {
 
 class CompaniesPage extends React.Component {
     handleQueryChange = e => {
-        this.props.companyStore.setPassword(e.target.value);
+        this.props.companyStore.setSearchQuery(e.target.value);
     };
     onFinish = values => {
-        console.log('Received values of form: ', values);
+        // this.props.companyStore.setSearchQuery(e.target.value)
     };
 
 

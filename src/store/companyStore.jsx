@@ -18,6 +18,10 @@ class CompanyStore {
         this.searchQuery = data;
     }
 
+    // async searchCompany(data) {
+    //     agent.Company.search(data)
+    // }
+
 }
 
 export default new CompanyStore();

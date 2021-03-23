@@ -72,7 +72,21 @@ const Profile = {
         requests.put(`/profiles/update`)
 };
 
+const Company = {
+    search: slug =>
+        requests.get(`/profiles/${slug}/follow`),
+    all: slug =>
+        requests.get(`/profiles/${slug}/follow`),
+    add: slug =>
+        requests.post(`/profiles/${slug}`),
+    follow: slug =>
+        requests.post(`/profiles/${slug}/follow`),
+    unfollow: slug =>
+        requests.del(`/profiles/update`)
+};
+
 export default {
     Auth,
     Profile,
+    Company
 };
