@@ -74,7 +74,7 @@ const Profile = {
 
 const Company = {
     search: slug =>
-        requests.get(`/profiles/${slug}/follow`),
+        requests.get(`/companies/search/${slug}`),
     all: slug =>
         requests.get(`/profiles/${slug}/follow`),
     add: slug =>

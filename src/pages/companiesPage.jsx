@@ -20,7 +20,7 @@ class CompaniesPage extends React.Component {
         this.props.companyStore.setSearchQuery(e.target.value);
     };
     onFinish = values => {
-        // this.props.companyStore.setSearchQuery(e.target.value)
+        this.props.companyStore.searchCompany()
     };
 
 
