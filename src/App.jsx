@@ -17,19 +17,13 @@ const {Header, Content, Footer} = Layout;
 
 class App extends Component {
     componentWillMount() {
-        if (!this.props.commonStore.token) {
-            this.props.commonStore.setAppLoaded();
-
-        }
-    }
-
-    componentDidMount() {
         if (this.props.commonStore.token) {
             this.props.userStore.authorize();
             this.props.userStore.pullUser();
-            this.props.commonStore.setAppLoaded();
         }
+        this.props.commonStore.setAppLoaded();
     }
+
 
     render() {
         if (this.props.commonStore.appLoaded) {
@@ -76,7 +70,7 @@ class App extends Component {
                         </Route>
                     </Switch>
                     <h6>token : {this.props.commonStore.token}</h6>
-                    <Footer style={{textAlign: "center"}}>Ant Design ©2018 Created by BMSTU</Footer>
+                    <Footer style={{textAlign: "center"}}>Ant Design ©2021 Created by BMSTU</Footer>
                 </div>
             );
         }
