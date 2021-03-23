@@ -28,8 +28,6 @@ class LoginPage extends React.Component {
     };
 
     handleSubmitForm = () => {
-        console.log(this.props.authStore.values.email);
-        console.log(this.props.authStore.values.password);
         this.props.authStore.login().then(() => this.props.history.replace("/"));
     };
     onFinish = (values) => {
