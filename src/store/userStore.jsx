@@ -27,6 +27,8 @@ class UserStore {
             unAuthorize: action,
             pullUser: action,
             update: action,
+            setName: action,
+            setEmail: action,
         })
     }
 
@@ -37,6 +39,14 @@ class UserStore {
 
     unAuthorize() {
         this.isAuthorized = true
+    }
+
+    setName(name) {
+        this.userData.name = name
+    }
+
+    setEmail(email) {
+        this.userData.email = email
     }
 
 

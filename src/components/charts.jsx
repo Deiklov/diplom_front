@@ -1,5 +1,5 @@
-import React, { PureComponent } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import React, {PureComponent} from 'react';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 
 const data = [
     {
@@ -49,30 +49,30 @@ const data = [
 export default class ExampleCharts extends PureComponent {
     render() {
         return (
-            <LineChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                    top: 5,
-                    right: 30,
-                    left: 20,
-                    bottom: 5
-                }}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                    type="monotone"
-                    dataKey="AAPL"
-                    stroke="#8884d8"
-                    activeDot={{ r: 8 }}
-                />
-                <Line type="monotone" dataKey="TSLA" stroke="#82ca9d" />
-            </LineChart>
+            <ResponsiveContainer width={'99%'} height={400}>
+                <LineChart width={700} height={400} data={data}
+                           margin={{
+                               top: 5,
+                               right: 30,
+                               left: 20,
+                               bottom: 5
+                           }}
+                >
+                    <CartesianGrid strokeDasharray="3 3"/>
+                    <XAxis dataKey="name"/>
+                    <YAxis/>
+                    <Tooltip/>
+                    <Legend/>
+                    <Line
+                        type="monotone"
+                        dataKey="AAPL"
+                        legendType="circle"
+                        stroke="#8884d8"
+                        activeDot={{r: 8}}
+                    />
+                    <Line type="monotone" dataKey="TSLA" stroke="#82ca9d"/>
+                </LineChart>
+            </ResponsiveContainer>
         );
     }
 }

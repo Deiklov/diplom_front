@@ -8,7 +8,7 @@ import ExampleCharts from "../components/charts";
 function MainPage() {
     return (
         <>
-            <Card title="Default page" style={{width: 300}}>
+            <Card title="Default page" style={{width: 400}}>
                 <p>Hello </p>
                 <p>{userStoreInstance.userData.name}</p>
                 <p>{userStoreInstance.userData.email}</p>

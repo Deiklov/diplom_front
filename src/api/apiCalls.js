@@ -69,7 +69,7 @@ const Profile = {
     unfollow: username =>
         requests.del(`/profiles/${username}/follow`),
     update: (name = undefined, email = undefined, avatarSrc = undefined) =>
-        requests.put(`/profiles/update`)
+        requests.put(`/user`)
 };
 
 const Company = {

@@ -53,7 +53,7 @@ class App extends Component {
                                 </Route>
                                 <Route path="/" exact>
                                     <Row>
-                                        <Col span={8} offset={8}><MainPage/></Col>
+                                        <Col span={20} offset={2}><MainPage/></Col>
                                     </Row>
                                 </Route>
                                 <Route path="/signup" exact>
