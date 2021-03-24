@@ -23,46 +23,47 @@ class CompaniesPage extends React.Component {
         this.props.companyStore.searchCompany()
     };
 
+    componentWillMount() {
+        this.props.companyStore.getAllCompanies();
+        console.log(this.props.companyStore.companyList)
+    }
+
 
     render() {
-        const {values, errors, inProgress} = this.props.authStore;
-        const elements = ["AAPL", "TSLA", "AMZN", "GOOG", "FB"];
-
+        const {requestErrors: errors} = this.props.companyStore;
 
         return (
-            <div className="auth-page">
-                <div className="container page">
-                    <div className="row">
-                        <Form {...layout} layout={"inline"} name="nest-messages" onFinish={this.onFinish}>
-                            <Form.Item
-                                name={['searchCompany']}
-                                label="Enter company name"
-                            >
-                                <Input style={{width: 160}} placeholder="AAPL"
-                                       onChange={this.handleQueryChange}/>
-                            </Form.Item>
-                            <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
-                                <Button type="primary" htmlType="submit">
-                                    Search
-                                </Button>
-                            </Form.Item>
-                        </Form>
-                        <div className="col-md-6 offset-md-3 col-xs-12">
-                            <div className="site-card-border-less-wrapper">
-                                {elements.map((value, index) => {
-                                    return <Card title={value} bordered={false} style={{width: 300}}>
-                                        <p>Open price 200$</p>
-                                        <p>Close price 250$</p>
-                                        <p>Date 12.03.2021</p>
-                                    </Card>
-                                })}
-                            </div>
-                        </div>
-                    </div>
+            <div className="row">
+                <ListErrors errors={errors}/>
+                <Form {...layout} layout={"inline"} name="nest-messages" onFinish={this.onFinish}>
+                    <Form.Item
+                        name={['searchCompany']}
+                        label="Enter company name"
+                    >
+                        <Input style={{width: 160}} placeholder="AAPL"
+                               onChange={this.handleQueryChange}/>
+                    </Form.Item>
+                    <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
+                        <Button type="primary" htmlType="submit">
+                            Search
+                        </Button>
+                    </Form.Item>
+                </Form>
+                <div className="col-md-6 offset-md-3 col-xs-12">
+                    {this.props.companyStore.companyList &&
+                    this.props.companyStore.companyList.map((value, index) => {
+                        return <Card title={value.name} bordered={true} style={{width: 380}}>
+                            <p>Number: {index}</p>
+                            <p>ID: {value.id}</p>
+                            <p>Country: {value.country}</p>
+                            <p>Was founded: {value.founded_at}</p>
+                            <p>Description: {value.description}</p>
+                        </Card>
+                    })}
                 </div>
             </div>
         );
     }
 }
 
-export default inject('authStore')(withRouter(observer(CompaniesPage)));
+export default inject('companyStore')(withRouter(observer(CompaniesPage)));

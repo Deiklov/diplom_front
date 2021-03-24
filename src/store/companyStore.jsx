@@ -29,6 +29,7 @@ class CompanyStore {
 
     searchCompany() {
         return agent.Company.search(this.searchQuery)
+            //запустит action который изменить observable object
             .then(action(({companyList}) => {
                 this.companyList = companyList;
             }))
@@ -36,6 +37,15 @@ class CompanyStore {
                 this.requestErrors = err.response && err.response.body && err.response.body.errors;
                 throw err;
             }))
+    }
+
+    getAllCompanies() {
+        return agent.Company.all().then(action((companyList) => {
+            this.companyList = companyList;
+        })).catch(action((err) => {
+            this.requestErrors = err.response && err.response.body && err.response.body.errors;
+            throw err;
+        }))
     }
 
 }

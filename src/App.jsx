@@ -12,6 +12,7 @@ import {Row, Col} from 'antd';
 import {inject, observer} from "mobx-react";
 import MainPage from "./pages/mainPage";
 import userStore from "./store/userStore";
+import {sha256} from "js-sha256";
 
 const {Header, Content, Footer} = Layout;
 
@@ -29,7 +30,7 @@ class App extends Component {
         if (this.props.commonStore.appLoaded) {
             return (
                 <div>
-                    <Header style={{position: "sticky", top: "0"}}>
+                    <Header style={{position: 'fixed', zIndex: 1, width: '100%'}}>
                         <div className="logo"/>
                         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
                             <Menu.Item key="4"><Link to="/">Main page</Link></Menu.Item>
@@ -42,34 +43,40 @@ class App extends Component {
                             <Menu.Item key="5"><Link to="/companies">Companies</Link></Menu.Item>
                         </Menu>
                     </Header>
-                    <Switch>
-                        <Route path="/login" exact>
-                            <Row>
-                                <Col span={8} offset={8}><LoginPage/></Col>
-                            </Row>
-                        </Route>
-                        <Route path="/" exact>
-                            <Row>
-                                <Col span={8} offset={8}><MainPage/></Col>
-                            </Row>
-                        </Route>
-                        <Route path="/signup" exact>
-                            <Row>
-                                <Col span={8} offset={8}><SignUpContainer/></Col>
-                            </Row>
-                        </Route>
-                        <Route path="/profile" exact>
-                            <Row>
-                                <Col span={12} offset={0}><ProfilePage/></Col>
-                            </Row>
-                        </Route>
-                        <Route path="/companies" exact>
-                            <Row>
-                                <Col span={12} offset={0}><CompaniesPage/></Col>
-                            </Row>
-                        </Route>
-                    </Switch>
-                    <h6>token : {this.props.commonStore.token}</h6>
+                    <Content className="site-layout" style={{padding: '0 50px', marginTop: 64}}>
+                        <div className="site-layout-background" style={{padding: 24, minHeight: 400}}>
+                            <Switch>
+                                <Route path="/login" exact>
+                                    <Row>
+                                        <Col span={8} offset={8}><LoginPage/></Col>
+                                    </Row>
+                                </Route>
+                                <Route path="/" exact>
+                                    <Row>
+                                        <Col span={8} offset={8}><MainPage/></Col>
+                                    </Row>
+                                </Route>
+                                <Route path="/signup" exact>
+                                    <Row>
+                                        <Col span={8} offset={8}><SignUpContainer/></Col>
+                                    </Row>
+                                </Route>
+                                <Route path="/profile" exact>
+                                    <Row>
+                                        <Col span={12} offset={0}><ProfilePage/></Col>
+                                    </Row>
+                                </Route>
+                                <Route path="/companies" exact>
+                                    <Row>
+                                        <Col span={12} offset={0}><CompaniesPage/></Col>
+                                    </Row>
+                                </Route>
+                            </Switch>
+                        </div>
+                    </Content>
+
+
+                    <h6>SHA-256(jwt) : {sha256(this.props.commonStore.token)}</h6>
                     <Footer style={{textAlign: "center"}}>Ant Design ©2021 Created by BMSTU</Footer>
                 </div>
             );

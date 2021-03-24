@@ -5,8 +5,8 @@ import authStore from '../store/authStore';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const API_ROOT = 'https://bmstu-romanov.xyz/api/v1';
-// const API_ROOT = 'http://localhost:8080/api/v1';
+ const API_ROOT = 'https://bmstu-romanov.xyz/api/v1';
+//const API_ROOT = 'http://localhost:8080/api/v1';
 
 
 const handleErrors = err => {
@@ -75,8 +75,8 @@ const Profile = {
 const Company = {
     search: slug =>
         requests.get(`/companies/search/${slug}`),
-    all: slug =>
-        requests.get(`/profiles/${slug}/follow`),
+    all: () =>
+        requests.get(`/companies`),
     add: slug =>
         requests.post(`/profiles/${slug}`),
     follow: slug =>
