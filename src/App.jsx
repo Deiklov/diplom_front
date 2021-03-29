@@ -52,7 +52,6 @@ class App extends Component {
                                         <Col span={8} offset={8}><LoginPage/></Col>
                                     </Row>
                                 </Route>
-                                <Route path='*' exact={true} component={NotFoundPage} />
                                 <Route path="/" exact>
                                     <Row>
                                         <Col span={20} offset={2}><MainPage/></Col>
@@ -73,6 +72,7 @@ class App extends Component {
                                         <Col span={12} offset={0}><CompaniesPage/></Col>
                                     </Row>
                                 </Route>
+                                <Route path='*' exact={true} component={NotFoundPage} />
                             </Switch>
                         </div>
                     </Content>

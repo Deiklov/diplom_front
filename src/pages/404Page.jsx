@@ -1,12 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-class NotFoundPage extends React.Component{
-    render(){
-        return <div>
-            <p style={{textAlign:"center"}}>
-                <Link to="/">Sorry, page not found! </Link>
-            </p>
-        </div>;
+import {Result, Button} from 'antd';
+import {Link} from 'react-router-dom';
+
+class NotFoundPage extends React.Component {
+    render() {
+        return (
+            <Result
+                status="404"
+                title="404"
+                subTitle="Sorry, the page you visited does not exist."
+                extra={<Link to="/"><Button type="primary">Back Home</Button> </Link>}
+            />
+        )
     }
 }
+
 export default NotFoundPage;
