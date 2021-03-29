@@ -2,6 +2,7 @@ import {observable, action, makeObservable} from 'mobx';
 import agent from '../api/apiCalls';
 import userStore from './userStore';
 import commonStore from './commonStore';
+
 //для регистрации и авторизации для этого логин+пароль
 class AuthStore {
     inProgress = false;
@@ -10,7 +11,7 @@ class AuthStore {
     values = {
         email: '',
         password: '',
-        name:''
+        name: ''
     };
 
     constructor() {
@@ -52,11 +53,11 @@ class AuthStore {
         this.errors = undefined;
         return agent.Auth.login(this.values.email, this.values.password)
             .then(({token}) => commonStore.setToken(token))
-            .then(()=>userStore.authorize())
+            .then(() => userStore.authorize())
             .then(() => userStore.pullUser())
             .catch(action((err) => {
-                this.errors = err.response && err.response.body && err.response.body.errors;
-                throw err;
+                this.errors = err.response.body.error;
+                throw this.errors;
             }))
             .finally(action(() => {
                 this.inProgress = false;
@@ -68,7 +69,7 @@ class AuthStore {
         this.errors = undefined;
         return agent.Auth.register(this.values.name, this.values.email, this.values.password)
             .then(({token}) => commonStore.setToken(token))
-            .then(()=>userStore.authorize())
+            .then(() => userStore.authorize())
             .then(() => userStore.pullUser())
             .catch(action((err) => {
                 this.errors = err.response && err.response.body && err.response.body.errors;

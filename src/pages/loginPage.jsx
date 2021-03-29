@@ -28,7 +28,8 @@ class LoginPage extends React.Component {
     };
 
     handleSubmitForm = () => {
-        this.props.authStore.login().then(() => this.props.history.replace("/"));
+        this.props.authStore.login().then(() => this.props.history.replace("/")).
+        catch((err) => console.log(err));
     };
     onFinish = (values) => {
         this.handleSubmitForm()
@@ -39,7 +40,7 @@ class LoginPage extends React.Component {
     };
 
     render() {
-        const {values, errors, inProgress} = this.props.authStore;
+        const {inProgress, errors, values} = this.props.authStore;
 
         return (
             <div className="auth-page">

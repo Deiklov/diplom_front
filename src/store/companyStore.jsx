@@ -34,8 +34,7 @@ class CompanyStore {
                 this.companyList = companyList;
             }))
             .catch(action((err) => {
-                this.requestErrors = err.response && err.response.body && err.response.body.errors;
-                throw err;
+                this.requestErrors = err.response.body.error;
             }))
     }
 
@@ -43,8 +42,7 @@ class CompanyStore {
         return agent.Company.all().then(action((companyList) => {
             this.companyList = companyList;
         })).catch(action((err) => {
-            this.requestErrors = err.response && err.response.body && err.response.body.errors;
-            throw err;
+            this.requestErrors = err.response.body.error;
         }))
     }
 
