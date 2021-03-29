@@ -13,6 +13,7 @@ import {inject, observer} from "mobx-react";
 import MainPage from "./pages/mainPage";
 import userStore from "./store/userStore";
 import {sha256} from "js-sha256";
+import NotFoundPage from "./pages/404Page";
 
 const {Header, Content, Footer} = Layout;
 
@@ -51,6 +52,7 @@ class App extends Component {
                                         <Col span={8} offset={8}><LoginPage/></Col>
                                     </Row>
                                 </Route>
+                                <Route path='*' exact={true} component={NotFoundPage} />
                                 <Route path="/" exact>
                                     <Row>
                                         <Col span={20} offset={2}><MainPage/></Col>
