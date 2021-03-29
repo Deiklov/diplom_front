@@ -78,7 +78,7 @@ class App extends Component {
                     </Content>
 
 
-                    <h6>SHA-256(jwt) : {sha256(this.props.commonStore.token)}</h6>
+                    {this.props.commonStore.token && <h6>SHA-256(jwt) : {sha256(this.props.commonStore.token)}</h6>}
                     <Footer style={{textAlign: "center"}}>Ant Design ©2021 Created by BMSTU</Footer>
                 </div>
             );
