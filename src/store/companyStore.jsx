@@ -12,6 +12,7 @@ class CompanyStore {
     searchQuery = undefined;
     companyList = [];
     requestErrors = undefined;
+    isModalVisible = false;
 
     constructor() {
         makeObservable(this, {
@@ -19,12 +20,21 @@ class CompanyStore {
             setSearchQuery: action,
             companyList: observable,
             companyData: observable,
-            requestErrors: observable
+            requestErrors: observable,
+            isModalVisible: observable
         })
     }
 
     setSearchQuery(data) {
         this.searchQuery = data;
+    }
+
+    setModalVisible() {
+        this.isModalVisible = true
+    }
+
+    setModalInvisible() {
+        this.isModalVisible = false
     }
 
     searchCompany() {

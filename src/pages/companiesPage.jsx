@@ -1,5 +1,5 @@
-import React from "react";
-import {Form, Input, Button, Checkbox} from 'antd';
+import React, {useState} from 'react';
+import {Form, Input, Button, Checkbox, Row, Col, Modal} from 'antd';
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
@@ -16,11 +16,30 @@ const layout = {
 };
 
 class CompaniesPage extends React.Component {
+
+    showModal = () => {
+        this.props.companyStore.setModalVisible()
+    };
+
+    handleOk = () => {
+        this.onFinishAdd();
+        this.props.companyStore.setModalInvisible()
+    };
+
+    handleCancel = () => {
+        this.props.companyStore.setModalInvisible()
+    };
     handleQueryChange = e => {
         this.props.companyStore.setSearchQuery(e.target.value);
     };
+    handleChangeNewCompanyName = e => {
+        //todo change store value
+    };
     onFinish = values => {
         this.props.companyStore.searchCompany()
+    };
+    onFinishAdd = values => {
+        //todo add to db
     };
 
     componentWillMount() {
@@ -33,36 +52,60 @@ class CompaniesPage extends React.Component {
         const {requestErrors: errors} = this.props.companyStore;
 
         return (
-            <div className="row">
-                <ListErrors errors={errors}/>
-                <Form {...layout} layout={"inline"} name="nest-messages" onFinish={this.onFinish}>
-                    <Form.Item
-                        name={['searchCompany']}
-                        label="Enter company name"
-                    >
-                        <Input style={{width: 160}} placeholder="AAPL"
-                               onChange={this.handleQueryChange}/>
-                    </Form.Item>
-                    <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
-                        <Button type="primary" htmlType="submit">
-                            Search
+            <>
+                <Row justify="center">
+                    <Col span={16}>
+                        <ListErrors errors={errors}/>
+                        <Form {...layout} layout={"inline"} name="nest-messages" onFinish={this.onFinish}>
+                            <Form.Item
+                                name={['searchCompany']}
+                                label="Enter company name"
+                            >
+                                <Input style={{width: 160}} placeholder="AAPL"
+                                       onChange={this.handleQueryChange}/>
+                            </Form.Item>
+                            <Form.Item wrapperCol={{...layout.wrapperCol, offset: 8}}>
+                                <Button type="primary" htmlType="submit">
+                                    Search
+                                </Button>
+                            </Form.Item>
+                        </Form>
+                    </Col>
+                    <Col span={8}>
+                        <Button type="primary" onClick={this.showModal}>
+                            Add new company
                         </Button>
-                    </Form.Item>
-                </Form>
-                <div className="col-md-6 offset-md-3 col-xs-12">
-                    {this.props.companyStore.companyList &&
-                    this.props.companyStore.companyList.map((value, index) => {
-                        return <Card title={value.name} bordered={true} style={{width: 380}}>
-                            <p>Number: {index}</p>
-                            <p>ID: {value.id}</p>
-                            <p>Country: {value.country}</p>
-                            <p>Was founded: {value.founded_at}</p>
-                            <p>Description: {value.description}</p>
-                        </Card>
-                    })}
-                </div>
-            </div>
-        );
+                        <Modal title="Basic Modal" visible={this.props.companyStore.isModalVisible} onOk={this.handleOk}
+                               onCancel={this.handleCancel}>
+                            <Form {...layout} layout={"inline"} name="nest-messages" onFinish={this.onFinishAdd}>
+                                <Form.Item
+                                    name={['addCompany']}
+                                    label="Enter company name"
+                                >
+                                    <Input style={{width: 160}} placeholder="PYPL"
+                                           onChange={this.handleChangeNewCompanyName}/>
+                                </Form.Item>
+                            </Form>
+                        </Modal>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col span={6} offset={3}>
+                        {this.props.companyStore.companyList &&
+                        this.props.companyStore.companyList.map((value, index) => {
+                            return <Card title={value.name} bordered={true} style={{width: 380}}>
+                                <p>Number: {index}</p>
+                                <p>ID: {value.id}</p>
+                                <p>Country: {value.country}</p>
+                                <p>Was founded: {value.founded_at}</p>
+                                <p>Description: {value.description}</p>
+                            </Card>
+                        })};
+                    </Col>
+                </Row>
+            </>
+        )
+            ;
     }
 }
 

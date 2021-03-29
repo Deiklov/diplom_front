@@ -64,12 +64,12 @@ class App extends Component {
                                 </Route>
                                 <Route path="/profile" exact>
                                     <Row>
-                                        <Col span={12} offset={0}><ProfilePage/></Col>
+                                        <Col span={12} offset={4}><ProfilePage/></Col>
                                     </Row>
                                 </Route>
                                 <Route path="/companies" exact>
                                     <Row>
-                                        <Col span={12} offset={0}><CompaniesPage/></Col>
+                                        <Col span={24} offset={0}><CompaniesPage/></Col>
                                     </Row>
                                 </Route>
                                 <Route path='*' exact={true} component={NotFoundPage} />
