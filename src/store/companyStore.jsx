@@ -29,6 +29,10 @@ class CompanyStore {
         this.searchQuery = data;
     }
 
+    setNewCompanyName(data) {
+        this.companyData.name = data
+    }
+
     setModalVisible() {
         this.isModalVisible = true
     }
@@ -51,6 +55,14 @@ class CompanyStore {
     getAllCompanies() {
         return agent.Company.all().then(action((companyList) => {
             this.companyList = companyList;
+        })).catch(action((err) => {
+            this.requestErrors = err.response.body.error;
+        }))
+    }
+
+    addNewCompany() {
+        return agent.Company.add(this.companyData.name).then(action(() => {
+            this.getAllCompanies();
         })).catch(action((err) => {
             this.requestErrors = err.response.body.error;
         }))

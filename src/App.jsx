@@ -14,7 +14,7 @@ import MainPage from "./pages/mainPage";
 import userStore from "./store/userStore";
 import {sha256} from "js-sha256";
 import NotFoundPage from "./pages/404Page";
-
+import FullInfoPage from "./pages/fullInfoPage";
 const {Header, Content, Footer} = Layout;
 
 class App extends Component {
@@ -72,7 +72,13 @@ class App extends Component {
                                         <Col span={24} offset={0}><CompaniesPage/></Col>
                                     </Row>
                                 </Route>
-                                <Route path='*' exact={true} component={NotFoundPage} />
+                                <Route path="/company/page/:slug" exact>
+                                    <Row>
+                                        <Col span={24} offset={0}><FullInfoPage/></Col>
+                                    </Row>
+                                </Route>
+
+                                <Route path='*' exact={true} component={NotFoundPage}/>
                             </Switch>
                         </div>
                     </Content>

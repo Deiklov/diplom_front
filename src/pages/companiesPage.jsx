@@ -33,13 +33,13 @@ class CompaniesPage extends React.Component {
         this.props.companyStore.setSearchQuery(e.target.value);
     };
     handleChangeNewCompanyName = e => {
-        //todo change store value
+        this.props.companyStore.setNewCompanyName(e.target.value);
     };
     onFinish = values => {
         this.props.companyStore.searchCompany()
     };
     onFinishAdd = values => {
-        //todo add to db
+        this.props.companyStore.addNewCompany();
     };
 
     componentWillMount() {
@@ -94,13 +94,13 @@ class CompaniesPage extends React.Component {
                         {this.props.companyStore.companyList &&
                         this.props.companyStore.companyList.map((value, index) => {
                             return <Card title={value.name} bordered={true} style={{width: 380}}>
-                                <p>Number: {index}</p>
                                 <p>ID: {value.id}</p>
                                 <p>Country: {value.country}</p>
-                                <p>Was founded: {value.founded_at}</p>
+                                <p>IPO: {value.ipo}</p>
                                 <p>Description: {value.description}</p>
+                                <Link to={`/company/page/${value.ticker}`}><p>Ticker: {value.ticker}</p></Link>
                             </Card>
-                        })};
+                        })}
                     </Col>
                 </Row>
             </>
