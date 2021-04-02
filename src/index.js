@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import fullCmpnyStore from "./store/fullCmpnyStore"
 import authStore from "./store/authStore";
 import commonStore from "./store/commonStore";
 import userStore from "./store/userStore";
@@ -15,7 +16,8 @@ const stores = {
     authStore,
     commonStore,
     userStore,
-    companyStore
+    companyStore,
+    fullCmpnyStore
 };
 
 promiseFinally.shim();

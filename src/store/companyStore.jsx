@@ -67,6 +67,14 @@ class CompanyStore {
             this.requestErrors = err.response.body.error;
         }))
     }
+    getFullInfo() {
+        return agent.Company.get(this.companyData.name).then(action(() => {
+            this.getAllCompanies();
+        })).catch(action((err) => {
+            this.requestErrors = err.response.body.error;
+        }))
+    }
+
 
 }
 
