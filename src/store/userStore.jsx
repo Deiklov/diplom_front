@@ -50,8 +50,8 @@ class UserStore {
     }
 
 
-    async pullUser() {
-        agent.Auth.current()
+    pullUser() {
+        return agent.Auth.current()
             .then((data) => this.userData = data)
             .catch(action((err) => {
                 this.errors = err.response && err.response.body && err.response.body.errors;

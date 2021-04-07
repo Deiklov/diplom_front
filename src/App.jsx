@@ -20,8 +20,11 @@ const {Header, Content, Footer} = Layout;
 class App extends Component {
     componentWillMount() {
         if (this.props.commonStore.token) {
-            this.props.userStore.authorize();
-            this.props.userStore.pullUser();
+
+            this.props.userStore.pullUser()
+                .then(() => this.props.userStore.authorize())
+                .catch(() => this.props.history.replace("/login"))
+                .then(() => this.props.commonStore.token = undefined);
         }
         this.props.commonStore.setAppLoaded();
     }
@@ -33,7 +36,7 @@ class App extends Component {
                 <div>
                     <Header style={{position: 'fixed', zIndex: 1, width: '100%'}}>
                         <div className="logo"/>
-                        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']}>
+                        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
                             <Menu.Item key="4"><Link to="/">Main page</Link></Menu.Item>
                             {!this.props.userStore.isAuthorized &&
                             <Menu.Item key="1"><Link to="/login">Login</Link></Menu.Item>}

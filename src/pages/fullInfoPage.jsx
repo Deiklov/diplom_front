@@ -5,8 +5,15 @@ import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
 import ListErrors from "../components/ListErrors";
 import {Card} from 'antd';
+import {io} from "socket.io-client";
+import {HeartOutlined} from '@ant-design/icons';
 
 class FullInfoPage extends React.Component {
+    constructor() {
+        super();
+
+    }
+
     componentWillMount() {
         this.props.fullCmpnyStore.getFullInfo(this.props.match.params.slug)
     }
@@ -19,7 +26,7 @@ class FullInfoPage extends React.Component {
                 <Card title="Full info page" bordered={true} style={{width: 380}}>
                     {this.props.fullCmpnyStore.companyData.id &&
                     <>
-                        <p>Full info page {this.props.match.params.slug}</p>
+                        <p>Full info page {this.props.match.params.slug} <HeartOutlined/></p>
                         <p> ID : {this.props.fullCmpnyStore.companyData.id}</p>
                         <p> Name : {this.props.fullCmpnyStore.companyData.name}</p>
                         <p> IPO : {this.props.fullCmpnyStore.companyData.ipo}</p>
