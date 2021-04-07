@@ -15,6 +15,7 @@ import userStore from "./store/userStore";
 import {sha256} from "js-sha256";
 import NotFoundPage from "./pages/404Page";
 import FullInfoPage from "./pages/fullInfoPage";
+
 const {Header, Content, Footer} = Layout;
 
 class App extends Component {
@@ -45,6 +46,7 @@ class App extends Component {
                             {this.props.userStore.isAuthorized &&
                             <Menu.Item key="3"><Link to="/profile">Change profile</Link></Menu.Item>}
                             <Menu.Item key="5"><Link to="/companies">Companies</Link></Menu.Item>
+                            <Menu.Item key="6"><Link to="/favorites">Favorites list</Link></Menu.Item>
                         </Menu>
                     </Header>
                     <Content className="site-layout" style={{padding: '0 50px', marginTop: 64}}>
@@ -80,8 +82,13 @@ class App extends Component {
                                         <Col span={24} offset={0}><FullInfoPage/></Col>
                                     </Row>
                                 </Route>
+                                <Route path="/favorites" exact>
+                                    <Row>
+                                        <Col span={24} offset={0}><CompaniesPage/></Col>
+                                    </Row>
+                                </Route>
 
-                                <Route path='*' exact={true} component={NotFoundPage}/>
+                                <Route path='*' exact={true} component={NotFoundPage} status={404}/>
                             </Switch>
                         </div>
                     </Content>

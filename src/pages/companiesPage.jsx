@@ -43,8 +43,14 @@ class CompaniesPage extends React.Component {
     };
 
     componentWillMount() {
-        this.props.companyStore.getAllCompanies();
-        console.log(this.props.companyStore.companyList)
+        if (this.props.location.pathname === "/companies") {
+            this.props.companyStore.getAllCompanies();
+        } else {
+            this.props.companyStore.getFavorites();
+        }
+    }
+    componentWillUnmount() {
+        this.props.companyStore.reset();
     }
 
 
@@ -93,7 +99,7 @@ class CompaniesPage extends React.Component {
                     <Col span={6} offset={3}>
                         {this.props.companyStore.companyList &&
                         this.props.companyStore.companyList.map((value, index) => {
-                            return <Card title={value.name} bordered={true} style={{width: 380}}>
+                            return <Card title={value.name} bordered={true} style={{width: 380}} key={index}>
                                 <p>ID: {value.id}</p>
                                 <p>Country: {value.country}</p>
                                 <p>IPO: {value.ipo}</p>

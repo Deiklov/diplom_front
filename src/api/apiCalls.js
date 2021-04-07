@@ -75,6 +75,8 @@ const Profile = {
 const Company = {
     get: slug =>
         requests.get(`/company/page/${slug}`),
+    getFavorites: () =>
+        requests.get(`/companies/favorite`),
     all: () =>
         requests.get(`/companies`),
     add: name =>

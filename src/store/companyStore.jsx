@@ -21,8 +21,13 @@ class CompanyStore {
             companyList: observable,
             companyData: observable,
             requestErrors: observable,
-            isModalVisible: observable
+            isModalVisible: observable,
+            reset: action,
         })
+    }
+
+    reset() {
+        this.companyList = [];
     }
 
     setSearchQuery(data) {
@@ -67,14 +72,14 @@ class CompanyStore {
             this.requestErrors = err.response.body.error;
         }))
     }
-    getFullInfo() {
-        return agent.Company.get(this.companyData.name).then(action(() => {
-            this.getAllCompanies();
+
+    getFavorites() {
+        return agent.Company.getFavorites().then(action((companyList) => {
+            this.companyList = companyList;
         })).catch(action((err) => {
             this.requestErrors = err.response.body.error;
         }))
     }
-
 
 }
 
