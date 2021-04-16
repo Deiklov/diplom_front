@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
-import {Form, Input, Button, Checkbox, Row, Col, Modal, Image} from 'antd';
+import {Form, Input, Button, Checkbox, Row, Col, Modal, Image, DatePicker, Space} from 'antd';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
@@ -14,6 +15,14 @@ class FullInfoPage extends React.Component {
         super(props);
         this.state = {
             isFavorite: false,
+            data: [
+                {date: "07", visitors: 0},
+                {date: "08", visitors: 8},
+                {date: "09", visitors: 14},
+                {date: "10", visitors: 17},
+                {date: "11", visitors: 23},
+                {date: "12", visitors: 31},
+                {date: "13", visitors: 40}]
         }
     }
 
@@ -29,6 +38,7 @@ class FullInfoPage extends React.Component {
 
     render() {
         const {errors: errors, info: info} = this.props.fullCmpnyStore;
+        const {RangePicker} = DatePicker;
         return (
             <>
                 <ListErrors errors={errors}/>
@@ -60,6 +70,16 @@ class FullInfoPage extends React.Component {
                         <p> Exchange : {this.props.fullCmpnyStore.companyData.attributes.exchange}</p>
                         <p> Industry : {this.props.fullCmpnyStore.companyData.attributes.finnhubIndustry}</p>
                         <p> Description : {this.props.fullCmpnyStore.companyData.description}</p>
+                        <Space direction="vertical" size={12}>
+                            <RangePicker showTime/>
+                        </Space>
+                        <LineChart data={this.state.data} width={600} height={400}
+                                   margin={{top: 50, bottom: 50, left: 50, right: 50}}>
+                            <XAxis dataKey='date'/>
+                            <YAxis label='Visitantes'/>
+                            <Line type="monotone" dataKey="visitors" stroke="#001529" activeDot={{r: 5}}/>
+                            <Tooltip/>
+                        </LineChart>
                     </>
                     }
                 </Card>
