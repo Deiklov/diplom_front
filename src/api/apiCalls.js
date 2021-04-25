@@ -86,9 +86,15 @@ const Company = {
     unfollow: ticker =>
         requests.del(`/company/favorite`, {ticker}),
 };
+const TinkoffAPI = {
+    getHistoryCandles: (ticker, dateFrom, dateTo = new Date().toISOString(), internal = "day") =>
+        requests.get(encodeURI(`/market/candles?ticker=${ticker}&from=${dateFrom}&to=${dateTo}&interval=${internal}`))
+
+};
 
 export default {
     Auth,
     Profile,
-    Company
+    Company,
+    TinkoffAPI
 };
