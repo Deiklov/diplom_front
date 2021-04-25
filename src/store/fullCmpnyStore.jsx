@@ -1,4 +1,4 @@
-import {action, makeObservable, observable} from "mobx";
+import {action, makeObservable, observable, runInAction, toJS} from "mobx";
 import agent from "../api/apiCalls";
 
 
@@ -12,12 +12,16 @@ class FullCmpnyStore {
         ticker: undefined,
         logo: undefined,
         weburl: undefined,
+        figi: undefined,
         attributes: {
             currency: undefined,
             exchange: undefined,
             finnhubIndustry: undefined
         }
     };
+    dateFrom = undefined;
+    dateTo = undefined;
+    stocks = null;
     errors = undefined;
     info = undefined;
 
@@ -27,13 +31,20 @@ class FullCmpnyStore {
             errors: observable,
             info: observable,
             reset: action,
+            stocks: observable,
+            dateFrom: observable,
+            dateTo: observable,
+            setFromDate: action,
+            setToDate: action,
         })
     }
 
     reset() {
         this.errors = undefined;
         this.info = undefined;
-        this.companyData = {}
+        this.companyData = {};
+        this.stocks = null;
+        return Promise.resolve();
     }
 
     getFullInfo(slug) {
@@ -50,6 +61,28 @@ class FullCmpnyStore {
         })).catch(action((err) => {
             this.errors = err.response.body.error;
         }))
+    }
+
+    setFromDate(data) {
+        this.dateFrom = data
+    }
+
+    setToDate(data) {
+        this.dateTo = data
+    }
+
+    getStocksData() {
+        const ticker = this.companyData.ticker;
+        console.log(ticker);
+        if (ticker) {
+            return agent.TinkoffAPI.getHistoryCandles(ticker, this.dateFrom, this.dateTo).then(action((resp) => {
+                this.info = "Successfully got tinkoffAPI data";
+                this.stocks = resp;
+            }))
+                .catch(action((err) => {
+                    this.errors = err.response.body.error;
+                }))
+        }
     }
 
 

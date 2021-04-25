@@ -1,58 +1,76 @@
 import React, {useState} from 'react';
-import {Form, Input, Button, Checkbox, Row, Col, Modal, Image, DatePicker, Space} from 'antd';
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer} from 'recharts';
+import {Form, Input, Button, Checkbox, Row, Col, Modal, Image, DatePicker, Space, Table, Tag} from 'antd';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label} from 'recharts';
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
 import ListErrors from "../components/ListErrors";
 import {Card} from 'antd';
-import {io} from "socket.io-client";
 import {HeartTwoTone} from '@ant-design/icons';
 import ListSuccess from "../components/ListSuccess";
 
+
+
+const columns = [
+    {
+        title: 'Close price',
+        dataIndex: 'c',
+        key: 'c',
+    },
+    {
+        title: 'Time',
+        dataIndex: 'time',
+        key: 'time',
+    },
+];
+
 class FullInfoPage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isFavorite: false,
-            data: [
-                {date: "07", visitors: 0},
-                {date: "08", visitors: 8},
-                {date: "09", visitors: 14},
-                {date: "10", visitors: 17},
-                {date: "11", visitors: 23},
-                {date: "12", visitors: 31},
-                {date: "13", visitors: 40}]
-        }
-    }
 
     componentWillMount() {
-        this.props.fullCmpnyStore.reset();
-        this.props.fullCmpnyStore.getFullInfo(this.props.match.params.slug)
+        this.props.fullCmpnyStore.reset()
+            .then(() => this.props.fullCmpnyStore.getFullInfo(this.props.match.params.slug))
+            .then(() => this.props.fullCmpnyStore.getStocksData())
+
+    }
+
+    componentDidMount() {
+        // runInAction(() => this.props.fullCmpnyStore.getStocksData());
+
     }
 
     toogleFavorite = () => {
         this.props.fullCmpnyStore.addFavorite().then(this.setState({isFavorite: !this.state.isFavorite}))
     };
 
+    onChange = (value, dateString) => {
+        this.props.fullCmpnyStore.setFromDate(new Date(Date.parse(dateString[0])).toISOString());
+        this.props.fullCmpnyStore.setToDate(new Date(Date.parse(dateString[1])).toISOString());
+        console.log('Selected Time: ', value);
+        console.log('Formatted Selected Time: ', dateString);
+    };
+
+    loadCandles = () => {
+        this.props.fullCmpnyStore.getStocksData()
+    };
+
 
     render() {
-        const {errors: errors, info: info} = this.props.fullCmpnyStore;
+        const {errors, info} = this.props.fullCmpnyStore;
         const {RangePicker} = DatePicker;
         return (
             <>
                 <ListErrors errors={errors}/>
                 <ListSuccess info={info}/>
-                <Card title="Full info page" bordered={true} style={{width: 380}}>
+                <Card title="Full info page" bordered={true}>
                     {this.props.fullCmpnyStore.companyData.id &&
                     <>
                         <p>Full info page {this.props.match.params.slug}
-                            <Button type="ghost" shape={"circle"}
-                                    icon={<HeartTwoTone
-                                        twoToneColor="#eb2f96"
-                                        onClick={this.toogleFavorite}/>}
-                                    danger={this.state.isFavorite}>
-                            </Button>
+                            {/*<Button type="ghost" shape={"circle"}*/}
+                            {/*        icon={<HeartTwoTone*/}
+                            {/*            twoToneColor="#eb2f96"*/}
+                            {/*            onClick={this.toogleFavorite}/>}*/}
+                            {/*        danger={this.state.isFavorite}>*/}
+                            {/*</Button>*/}
                         </p>
                         <p> ID : {this.props.fullCmpnyStore.companyData.id}</p>
                         <p> Name : {this.props.fullCmpnyStore.companyData.name}</p>
@@ -71,15 +89,30 @@ class FullInfoPage extends React.Component {
                         <p> Industry : {this.props.fullCmpnyStore.companyData.attributes.finnhubIndustry}</p>
                         <p> Description : {this.props.fullCmpnyStore.companyData.description}</p>
                         <Space direction="vertical" size={12}>
-                            <RangePicker showTime/>
+                            {/*showTime это булеан флаг*/}
+                            <RangePicker onChange={this.onChange} showTime/>
                         </Space>
-                        <LineChart data={this.state.data} width={600} height={400}
-                                   margin={{top: 50, bottom: 50, left: 50, right: 50}}>
-                            <XAxis dataKey='date'/>
-                            <YAxis label='Visitantes'/>
-                            <Line type="monotone" dataKey="visitors" stroke="#001529" activeDot={{r: 5}}/>
-                            <Tooltip/>
-                        </LineChart>
+
+                        <Button type="primary" onClick={this.loadCandles}>
+                            Load stocks
+                        </Button>
+                        <ResponsiveContainer width={'100%'} height={400}>
+                            <LineChart data={this.props.fullCmpnyStore.stocks}>
+                                <XAxis dataKey='time' type="category" interval="preserveStartEnd" angle={0} dx={0}
+                                       padding={{left: 10}}>
+                                    <Label value="Time line" offset={0} position="insideBottom"/>
+                                </XAxis>
+                                <YAxis type="number" scale="auto">
+                                    <Label value="Close price" offset={0} position="left" angle={-90}/>
+                                </YAxis>
+                                <Line type="monotone" dataKey="c" stroke="#001529" dot={false}/>
+                                <Tooltip/>
+                                <Legend verticalAlign="top" height={36}/>
+                            </LineChart>
+                        </ResponsiveContainer>
+                        {this.props.fullCmpnyStore.stocks &&
+                        <Table dataSource={this.props.fullCmpnyStore.stocks} columns={columns} rowKey="time"/>}
+
                     </>
                     }
                 </Card>
