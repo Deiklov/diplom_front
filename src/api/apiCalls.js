@@ -6,7 +6,7 @@ import authStore from '../store/authStore';
 const superagent = superagentPromise(_superagent, global.Promise);
 
 const API_ROOT = 'https://bmstu-romanov.xyz/api/v1';
-//const API_ROOT = 'http://localhost:8080/api/v1';
+// const API_ROOT = 'http://localhost:8080/api/v1';
 
 
 const handleErrors = err => {

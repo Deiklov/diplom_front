@@ -1,15 +1,15 @@
 import React, {useState} from 'react';
 import {Form, Input, Button, Checkbox, Row, Col, Modal, Image, DatePicker, Space, Table, Tag} from 'antd';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label} from 'recharts';
-import {Link} from "react-router-dom";
+import {Link, Route} from "react-router-dom";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
 import ListErrors from "../components/ListErrors";
 import {Card} from 'antd';
 import {HeartTwoTone} from '@ant-design/icons';
 import ListSuccess from "../components/ListSuccess";
-
-
+import ButtonList from "../components/buttonList";
+import ProfilePage from "./profilePage";
 
 const columns = [
     {
@@ -52,6 +52,9 @@ class FullInfoPage extends React.Component {
     loadCandles = () => {
         this.props.fullCmpnyStore.getStocksData()
     };
+    loadCandlesWS = () => {
+        this.props.fullCmpnyStore.getStocksWS()
+    };
 
 
     render() {
@@ -88,14 +91,22 @@ class FullInfoPage extends React.Component {
                         <p> Exchange : {this.props.fullCmpnyStore.companyData.attributes.exchange}</p>
                         <p> Industry : {this.props.fullCmpnyStore.companyData.attributes.finnhubIndustry}</p>
                         <p> Description : {this.props.fullCmpnyStore.companyData.description}</p>
-                        <Space direction="vertical" size={12}>
-                            {/*showTime это булеан флаг*/}
-                            <RangePicker onChange={this.onChange} showTime/>
-                        </Space>
-
-                        <Button type="primary" onClick={this.loadCandles}>
-                            Load stocks
-                        </Button>
+                        <Row>
+                            <Space direction="vertical" size={12}>
+                                {/*showTime это булеан флаг*/}
+                                <RangePicker onChange={this.onChange} showTime/>
+                            </Space>
+                            <Button type="primary" onClick={this.loadCandles}>
+                                Load stocks
+                            </Button>
+                            <Button type="primary" onClick={this.loadCandlesWS}>
+                                Get real-time
+                            </Button>
+                            <Button type="primary" onClick={this.loadCandlesWS}>
+                                Predict
+                            </Button>
+                        </Row>
+                        <ButtonList/>
                         <ResponsiveContainer width={'100%'} height={400}>
                             <LineChart data={this.props.fullCmpnyStore.stocks}>
                                 <XAxis dataKey='time' type="category" interval="preserveStartEnd" angle={0} dx={0}
