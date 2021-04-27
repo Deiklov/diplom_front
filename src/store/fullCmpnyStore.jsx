@@ -85,10 +85,11 @@ class FullCmpnyStore {
     }
 
     getStocksWS() {
-        agent.Socket.onopen = () => console.log("ws connected");
-        agent.Socket.onclose = () => console.log("ws closed");
-        agent.Socket.onmessage = event => console.log("Получены данные " + event.data);
-        agent.Socket.onerror = err => console.log("Ошибка " + err.message);
+        const Socket = new WebSocket(`${agent.API_WS}market/candles/${this.companyData.ticker}`);
+        Socket.onopen = () => console.log("ws connected");
+        Socket.onclose = () => console.log("ws closed");
+        Socket.onmessage = event => console.log("Получены данные " + event.data);
+        Socket.onerror = err => console.log("Ошибка " + err.message);
     }
 
 

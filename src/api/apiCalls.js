@@ -8,6 +8,8 @@ const superagent = superagentPromise(_superagent, global.Promise);
 const API_ROOT = 'https://bmstu-romanov.xyz/api/v1';
 const API_WS = "wss://bmstu-romanov.xyz/api/v1/ws/";
 // const API_ROOT = 'http://localhost:8080/api/v1';
+// const API_WS = "wss://localhost:8080/api/v1/ws/";
+
 
 
 const handleErrors = err => {
@@ -92,12 +94,12 @@ const TinkoffAPI = {
         requests.get(encodeURI(`/market/candles?ticker=${ticker}&from=${dateFrom}&to=${dateTo}&interval=${internal}`))
 
 };
-const Socket = new WebSocket(`${API_WS}market/candles/AAPL`);
+
 
 export default {
     Auth,
     Profile,
     Company,
     TinkoffAPI,
-    Socket,
+    API_WS
 };
