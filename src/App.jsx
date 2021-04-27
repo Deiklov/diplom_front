@@ -12,7 +12,6 @@ import {Row, Col} from 'antd';
 import {inject, observer} from "mobx-react";
 import MainPage from "./pages/mainPage";
 import userStore from "./store/userStore";
-import {sha256} from "js-sha256";
 import NotFoundPage from "./pages/404Page";
 import FullInfoPage from "./pages/fullInfoPage";
 
@@ -94,7 +93,7 @@ class App extends Component {
                     </Content>
 
 
-                    {this.props.commonStore.token && <h6>SHA-256(jwt) : {sha256(this.props.commonStore.token)}</h6>}
+                    {this.props.commonStore.token && <h6>SHA-256(jwt) : {this.props.commonStore.token}</h6>}
                     <Footer style={{textAlign: "center"}}>Ant Design ©2021 Created by BMSTU</Footer>
                 </div>
             );

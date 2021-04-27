@@ -1,14 +1,14 @@
-FROM node:15-alpine as builder
+FROM node:16-alpine as builder
 
 # install and cache app dependencies
-COPY package.json package-lock.json ./
-RUN npm install && mkdir /react-frontend && mv ./node_modules ./react-frontend
+COPY package.json yarn.lock ./
+RUN yarn install && mkdir /react-frontend && mv ./node_modules ./react-frontend
 
 WORKDIR /react-frontend
 
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
 
 # ------------------------------------------------------
