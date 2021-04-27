@@ -1,14 +1,14 @@
 import superagentPromise from 'superagent-promise';
 import _superagent from 'superagent';
 import commonStore from '../store/commonStore';
-import authStore from '../store/authStore';
+// import authStore from '../store/authStore';
 
 const superagent = superagentPromise(_superagent, global.Promise);
 
-const API_ROOT = 'https://bmstu-romanov.xyz/api/v1';
-const API_WS = "wss://bmstu-romanov.xyz/api/v1/ws/";
-// const API_ROOT = 'http://localhost:8080/api/v1';
-// const API_WS = "wss://localhost:8080/api/v1/ws/";
+//зависит от двух env файлов которые определяются по react-script start и react-scripts build
+const API_ROOT = process.env.REACT_APP_API_ROOT;
+const API_WS = process.env.REACT_APP_API_WS;
+console.log(process.env);
 
 
 

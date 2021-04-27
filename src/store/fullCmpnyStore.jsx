@@ -85,7 +85,7 @@ class FullCmpnyStore {
     }
 
     getStocksWS() {
-        const Socket = new WebSocket(`${agent.API_WS}market/candles/${this.companyData.ticker}`);
+        const Socket = new WebSocket(`${agent.API_WS}/market/candles/${this.companyData.ticker}`);
         Socket.onopen = () => console.log("ws connected");
         Socket.onclose = () => console.log("ws closed");
         Socket.onmessage = event => console.log("Получены данные " + event.data);
