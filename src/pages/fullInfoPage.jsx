@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, Input, Button, Checkbox, Row, Col, Modal, Image, DatePicker, Space, Table, Tag} from 'antd';
+import {Form, Input, Button, Checkbox, Row, Col, Modal, Image, DatePicker, Space, Table, Tag, Radio} from 'antd';
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Label} from 'recharts';
 import {Link, Route} from "react-router-dom";
 import {withRouter} from "react-router";
@@ -25,6 +25,14 @@ const columns = [
 ];
 
 class FullInfoPage extends React.Component {
+    state = {
+        modalVisible: false,
+        predictAlg: 'LSTM',
+    };
+
+    setModalVisible(modalVisible) {
+        this.setState({modalVisible})
+    }
 
     componentWillMount() {
         this.props.fullCmpnyStore.reset()
@@ -42,11 +50,16 @@ class FullInfoPage extends React.Component {
         this.props.fullCmpnyStore.addFavorite().then(this.setState({isFavorite: !this.state.isFavorite}))
     };
 
-    onChange = (value, dateString) => {
+    onChangeDate = (value, dateString) => {
         this.props.fullCmpnyStore.setFromDate(new Date(Date.parse(dateString[0])).toISOString());
         this.props.fullCmpnyStore.setToDate(new Date(Date.parse(dateString[1])).toISOString());
         console.log('Selected Time: ', value);
         console.log('Formatted Selected Time: ', dateString);
+    };
+    onChangeAlg = e => {
+        console.log(this.state.predictAlg);
+        this.setState({predictAlg: e.target.value});
+        console.log(this.state.predictAlg)
     };
 
     loadCandles = () => {
@@ -94,7 +107,7 @@ class FullInfoPage extends React.Component {
                         <Row>
                             <Space direction="vertical" size={12}>
                                 {/*showTime это булеан флаг*/}
-                                <RangePicker onChange={this.onChange} showTime/>
+                                <RangePicker onChange={this.onChangeDate} showTime/>
                             </Space>
                             <Button type="primary" onClick={this.loadCandles}>
                                 Load stocks
@@ -102,11 +115,25 @@ class FullInfoPage extends React.Component {
                             <Button type="primary" onClick={this.loadCandlesWS}>
                                 Get real-time
                             </Button>
-                            <Button type="primary" onClick={this.loadCandlesWS}>
+                            <Button type="primary" onClick={() => this.setModalVisible(true)}>
                                 Predict
                             </Button>
                         </Row>
                         <ButtonList/>
+                        <Modal
+                            title="Choose prediction params"
+                            style={{top: 20}}
+                            visible={this.state.modalVisible}
+                            onOk={() => this.setModalVisible(false)}
+                            onCancel={() => this.setModalVisible(false)}
+                        >
+                            <p>Choose ARIMA or LSTM</p>
+                            <Radio.Group onChange={this.onChangeAlg} value={this.state.predictAlg}>
+                                <Radio value="ARIMA">ARIMA</Radio>
+                                <Radio value="LSTM">LSTM</Radio>
+                            </Radio.Group>
+                            <p>Choose prediction time</p>
+                        </Modal>
                         <ResponsiveContainer width={'100%'} height={400}>
                             <LineChart data={this.props.fullCmpnyStore.stocks}>
                                 <XAxis dataKey='time' type="category" interval="preserveStartEnd" angle={0} dx={0}
