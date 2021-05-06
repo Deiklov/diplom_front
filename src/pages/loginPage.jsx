@@ -1,5 +1,5 @@
 import React from "react";
-import {Form, Input, Button, Checkbox} from 'antd';
+import {Form, Input, Button, Checkbox, Row, Col} from 'antd';
 import {Link} from "react-router-dom";
 import {withRouter} from "react-router";
 import {inject, observer} from "mobx-react";
@@ -28,8 +28,7 @@ class LoginPage extends React.Component {
     };
 
     handleSubmitForm = () => {
-        this.props.authStore.login().then(() => this.props.history.replace("/")).
-        catch((err) => console.log(err));
+        this.props.authStore.login().then(() => this.props.history.replace("/")).catch((err) => console.log(err));
     };
     onFinish = (values) => {
         this.handleSubmitForm()
@@ -48,7 +47,7 @@ class LoginPage extends React.Component {
                     <div className="row">
                         <div className="col-md-6 offset-md-3 col-xs-12">
                             <h1 className="text-xs-center">Sign In</h1>
-                            <p className="text-xs-center">
+                            <p className="text-xs-center col-xs-0">
                                 <Link to="/signup">Need an account?</Link>
                             </p>
 

@@ -56,6 +56,7 @@ class FullInfoPage extends React.Component {
         console.log('Selected Time: ', value);
         console.log('Formatted Selected Time: ', dateString);
     };
+
     onChangeAlg = e => {
         console.log(this.state.predictAlg);
         this.setState({predictAlg: e.target.value});

@@ -12,7 +12,7 @@ const data = [
         name: "2017",
         TSLA: 3000,
         AAPL: 1398,
-        amt: 2210,
+        amt: 22
     },
     {
         name: "2018",

@@ -49,7 +49,7 @@ class App extends Component {
                         </Menu>
                     </Header>
                     <Content className="site-layout" style={{padding: '0 50px', marginTop: 64}}>
-                        <div className="site-layout-background" style={{padding: 24, minHeight: 400}}>
+                        <div className="site-layout-background" style={{padding: 24, minHeight: 600}}>
                             <Switch>
                                 <Route path="/login" exact>
                                     <Row>
@@ -91,8 +91,6 @@ class App extends Component {
                             </Switch>
                         </div>
                     </Content>
-
-
                     {this.props.commonStore.token && <h6>SHA-256(jwt) : {this.props.commonStore.token}</h6>}
                     <Footer style={{textAlign: "center"}}>Ant Design ©2021 Created by BMSTU</Footer>
                 </div>
