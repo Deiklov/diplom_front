@@ -21,6 +21,7 @@ class FullCmpnyStore {
     dateFrom = undefined;
     dateTo = undefined;
     stocks = null;
+    stocksPredicted = null;
     errors = undefined;
     info = undefined;
 
@@ -31,6 +32,7 @@ class FullCmpnyStore {
             info: observable,
             reset: action,
             stocks: observable,
+            stocksPredicted: observable,
             dateFrom: observable,
             dateTo: observable,
             setFromDate: action,
@@ -90,6 +92,21 @@ class FullCmpnyStore {
         Socket.onclose = () => console.log("ws closed");
         Socket.onmessage = event => console.log("Получены данные " + event.data);
         Socket.onerror = err => console.log("Ошибка " + err.message);
+    }
+
+    predict() {
+        if (this.companyData.ticker) {
+            return agent.Company.predict(this.companyData.ticker).then(action((resp) => {
+                this.info = "Successfully got prediction data";
+                this.stocksPredicted = resp;
+                this.stocks = this.stocks.concat(resp);
+                console.log(resp);
+                console.log(this.stocks)
+            }))
+                .catch(action((err) => {
+                    this.errors = err.response.body.error;
+                }))
+        }
     }
 
 

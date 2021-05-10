@@ -11,7 +11,6 @@ const API_WS = process.env.REACT_APP_API_WS;
 console.log(process.env);
 
 
-
 const handleErrors = err => {
     if (err && err.response && err.response.status === 401) {
         // authStore.logout();
@@ -88,6 +87,8 @@ const Company = {
         requests.post(`/company/favorite`, {ticker}),
     unfollow: ticker =>
         requests.del(`/company/favorite`, {ticker}),
+    predict: ticker =>
+        requests.get(`/company/predict/${ticker}`),
 };
 const TinkoffAPI = {
     getHistoryCandles: (ticker, dateFrom, dateTo = new Date().toISOString(), internal = "day") =>

@@ -70,6 +70,10 @@ class FullInfoPage extends React.Component {
         this.props.fullCmpnyStore.getStocksWS()
     };
 
+    predict = () => {
+        this.props.fullCmpnyStore.predict()
+    };
+
 
     render() {
         const {errors, info} = this.props.fullCmpnyStore;
@@ -116,7 +120,10 @@ class FullInfoPage extends React.Component {
                             <Button type="primary" onClick={this.loadCandlesWS}>
                                 Get real-time
                             </Button>
-                            <Button type="primary" onClick={() => this.setModalVisible(true)}>
+                            <Button type="primary" onClick={() => {
+                                this.predict();
+                                alert("Prediction function are called, please wait 20 seconds");
+                            }}>
                                 Predict
                             </Button>
                         </Row>
@@ -125,7 +132,9 @@ class FullInfoPage extends React.Component {
                             title="Choose prediction params"
                             style={{top: 20}}
                             visible={this.state.modalVisible}
-                            onOk={() => this.setModalVisible(false)}
+                            onOk={() => {
+                                this.setModalVisible(false);
+                            }}
                             onCancel={() => this.setModalVisible(false)}
                         >
                             <p>Choose ARIMA or LSTM</p>
@@ -144,7 +153,10 @@ class FullInfoPage extends React.Component {
                                 <YAxis type="number" scale="auto">
                                     <Label value="Close price" offset={0} position="left" angle={-90}/>
                                 </YAxis>
-                                <Line type="monotone" dataKey="c" stroke="#001529" dot={false}/>
+                                <Line type="monotone" dataKey="c"
+                                      stroke="#001529" dot={false} name="Real data"/>
+                                <Line type="monotone" dataKey="pred_close" name="Predicted data" stroke="#82ca9d"
+                                      dot={false}/>
                                 <Tooltip/>
                                 <Legend verticalAlign="top" height={36}/>
                             </LineChart>
