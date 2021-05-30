@@ -1,0 +1,22 @@
+---
+- name: test connection
+  hosts: backend
+  remote_user: root
+  become: yes
+
+  vars:
+    username: deiklov
+    repo_dir: front
+    repo_link: https://github.com/Deiklov/diplom_front.git
+
+  tasks:
+    - name: docker-compose install
+      shell: curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose && sudo apt install apt-transport-https ca-certificates curl software-properties-common
+
+    - name: update package
+      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+    - name: install docker
+      apt:
+        name: docker-ce
+
