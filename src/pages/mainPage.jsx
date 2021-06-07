@@ -4,7 +4,6 @@ import {AntDesignOutlined} from '@ant-design/icons';
 import {inject, observer} from "mobx-react";
 import userStoreInstance from "../store/userStore";
 import {withRouter} from "react-router";
-import logo from '../images/stocks_logo.jpg';
 
 function MainPage() {
     return (
