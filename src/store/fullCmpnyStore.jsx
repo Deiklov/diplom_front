@@ -18,12 +18,14 @@ class FullCmpnyStore {
             finnhubIndustry: undefined
         }
     };
+    socket = null;
     dateFrom = undefined;
     dateTo = undefined;
     stocks = null;
     stocksPredicted = null;
     errors = undefined;
     info = undefined;
+    currentPrice = 0;
 
     constructor() {
         makeObservable(this, {
@@ -32,11 +34,13 @@ class FullCmpnyStore {
             info: observable,
             reset: action,
             stocks: observable,
+            currentPrice: observable,
             stocksPredicted: observable,
             dateFrom: observable,
             dateTo: observable,
             setFromDate: action,
             setToDate: action,
+            closeWS: action,
         })
     }
 
@@ -79,6 +83,8 @@ class FullCmpnyStore {
             return agent.TinkoffAPI.getHistoryCandles(ticker, this.dateFrom, this.dateTo).then(action((resp) => {
                 this.info = "Successfully got tinkoffAPI data";
                 this.stocks = resp;
+                this.currentPrice = resp[resp.length - 1].c;
+                console.log(this.stocks)
             }))
                 .catch(action((err) => {
                     this.errors = err.response.body.error;
@@ -87,11 +93,24 @@ class FullCmpnyStore {
     }
 
     getStocksWS() {
-        const Socket = new WebSocket(`${agent.API_WS}/market/candles/${this.companyData.ticker}`);
-        Socket.onopen = () => console.log("ws connected");
-        Socket.onclose = () => console.log("ws closed");
-        Socket.onmessage = event => console.log("Получены данные " + event.data);
-        Socket.onerror = err => console.log("Ошибка " + err.message);
+        this.socket = new WebSocket(`${agent.API_WS}/market/candles/${this.companyData.ticker}`);
+        this.socket.onopen = action(() => {
+            console.log("ws connected");
+            this.stocks = this.stocks.slice(-20);
+            console.log(this.stocks)
+        });
+        this.socket.onclose = () => console.log("ws closed");
+        this.socket.onmessage = action(event => {
+            const data = JSON.parse(event.data);
+            this.stocks = this.stocks.concat(data);
+            console.log(data);
+            this.currentPrice = data.c;
+        });
+        this.socket.onerror = err => console.log("Ошибка " + err.message);
+    }
+
+    closeWS() {
+        this.socket.close(1000, "kek")
     }
 
     predict() {

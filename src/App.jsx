@@ -14,6 +14,7 @@ import MainPage from "./pages/mainPage";
 import userStore from "./store/userStore";
 import NotFoundPage from "./pages/404Page";
 import FullInfoPage from "./pages/fullInfoPage";
+import logo from "./images/money.jpg";
 
 const {Header, Content, Footer} = Layout;
 
@@ -33,7 +34,7 @@ class App extends Component {
     render() {
         if (this.props.commonStore.appLoaded) {
             return (
-                <div>
+                <div style={{backgroundImage: `url(${logo})`}}>
                     <Header style={{position: 'fixed', zIndex: 1, width: '100%'}}>
                         <div className="logo"/>
                         <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
@@ -48,7 +49,8 @@ class App extends Component {
                             <Menu.Item key="6"><Link to="/favorites">Favorites list</Link></Menu.Item>
                         </Menu>
                     </Header>
-                    <Content className="site-layout" style={{padding: '0 50px', marginTop: 64}}>
+                    <Content className="site-layout"
+                             style={{padding: '0 50px', marginTop: 64}}>
                         <div className="site-layout-background" style={{padding: 24, minHeight: 600}}>
                             <Switch>
                                 <Route path="/login" exact>
@@ -83,7 +85,7 @@ class App extends Component {
                                 </Route>
                                 <Route path="/favorites" exact>
                                     <Row>
-                                        <Col span={24} offset={0}><CompaniesPage/></Col>
+                                        <Col xs={{span: 24, offset: 0}}><CompaniesPage/></Col>
                                     </Row>
                                 </Route>
 

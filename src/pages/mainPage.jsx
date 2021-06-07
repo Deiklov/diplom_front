@@ -1,9 +1,10 @@
 import React from 'react';
-import {Card} from 'antd';
+import {Card, Avatar, Image} from 'antd';
+import {AntDesignOutlined} from '@ant-design/icons';
 import {inject, observer} from "mobx-react";
 import userStoreInstance from "../store/userStore";
 import {withRouter} from "react-router";
-import ExampleCharts from "../components/charts";
+import logo from '../images/stocks_logo.jpg';
 
 function MainPage() {
     return (
@@ -16,8 +17,6 @@ function MainPage() {
                 <p>{userStoreInstance.userData.avatarSrc}</p>
                 {!userStoreInstance.isAuthorized && <p>Dear guest please authorize in system</p>}
             </Card>
-
-            <ExampleCharts/>
         </>
     );
 }
